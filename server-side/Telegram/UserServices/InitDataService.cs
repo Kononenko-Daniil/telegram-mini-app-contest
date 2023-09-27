@@ -1,10 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
+using server_side.Models;
 using server_side.Types;
 using System.Collections.Specialized;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Text.Json;
+using System.Net.Http.Json;
 
 namespace server_side.Telegram.UserServices
 {
@@ -40,6 +44,16 @@ namespace server_side.Telegram.UserServices
             byte[] actualHash = Convert.FromHexString(queryDict[InitDataKey.HASH]);
         
             return actualHash.SequenceEqual(generatedHash);
+        }
+
+        public TelegramUser GetUser(string initData) {
+            NameValueCollection query = HttpUtility.ParseQueryString(initData);
+            SortedDictionary<string, string> queryDict = QueryToSortedDictionary(query);
+
+            string userRaw = queryDict[InitDataKey.USER];
+            TelegramUser user = JsonSerializer.Deserialize<TelegramUser>(userRaw)!;
+
+            return user;
         }
 
         private SortedDictionary<string, string> QueryToSortedDictionary(NameValueCollection query) {
