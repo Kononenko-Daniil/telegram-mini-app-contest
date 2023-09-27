@@ -1,15 +1,17 @@
 using server_side.Extensions.Services;
 using server_side.Middlewares.UseTelegramUser;
 
-const string ALLOW_ORIGINS = "allowOrigins";
-
 var builder = WebApplication.CreateBuilder(args);
+
+string ALLOW_ORIGINS = "allowOrigins";
+string DB_CONNECTION_STRING = builder.Configuration.GetConnectionString("Default")!;
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTelegram(builder.Configuration);
+builder.Services.AddDatabase(DB_CONNECTION_STRING);
 
 builder.Services.AddCors(p => p.AddPolicy(ALLOW_ORIGINS, policy => {
     policy.AllowAnyOrigin()
