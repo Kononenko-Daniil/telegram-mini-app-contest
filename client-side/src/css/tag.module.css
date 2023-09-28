@@ -1,0 +1,42 @@
+@import "./var.module.css";
+
+div.tag {
+    color: var(--primary-color);
+	text-align: center;
+
+	font-family: var(--default-font);
+	font-size: small;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 18px;
+	letter-spacing: 0.1px;
+
+	display: inline-flex;
+	height: 15px;
+	margin: 5px;
+	padding: 5px 5px;
+	width: fit-content;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+	cursor: pointer;
+
+	border-radius: 8px;
+	border-width: 0px;
+	background-color: var(--primary-tinned-color);
+}
+
+div.tag.primary {
+    color: var(--primary-color);
+	background-color: var(--primary-tinned-color);
+}
+
+div.tag.danger {
+    color: var(--danger-color);
+	background-color: var(--danger-tinned-color);
+}
+
+div.tag.success {
+    color: var(--success-color);
+	background-color: var(--success-tinned-color);
+}
