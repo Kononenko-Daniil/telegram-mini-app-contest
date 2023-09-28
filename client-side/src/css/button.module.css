@@ -1,0 +1,67 @@
+@import "var.module.css";
+
+button {
+	color: var(--white-color);
+	text-align: center;
+
+	font-family: var(--default-font);
+	font-size: medium;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 18px;
+	letter-spacing: 0.1px;
+
+	display: inline-flex;
+	height: 48px;
+	margin: 5px;
+	padding: 12px 12px;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+	cursor: pointer;
+
+	border-radius: 8px;
+	border-width: 0px;
+	background-color: var(--button-color);
+}
+
+button.sm {
+	height: 30px;
+	font-size: small;
+}
+
+button.md {
+	height: 48px;
+	font-size: medium;
+}
+
+button.primary {
+	color: var(--white-color);
+	background-color: var(--primary-color);
+}
+
+button.danger {
+	color: var(--white-color);
+	background-color: var(--danger-color);
+}
+
+button.success {
+	color: var(--white-color);
+	background-color: var(--success-color);
+}
+
+button.primary-tinned {
+	color: var(--primary-color);
+	background-color: var(--primary-tinned-color);
+}
+
+button.danger-tinned {
+	color: var(--danger-color);
+	background-color: var(--danger-tinned-color);
+}
+
+button.success-tinned {
+	color: var(--success-color);
+	background-color: var(--success-tinned-color);
+}
+

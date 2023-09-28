@@ -1,0 +1,43 @@
+@import "./var.module.css";
+@import "./button.module.css";
+@import "./avatar.module.css";
+@import "./tag.module.css";
+@import "./calendar.module.css";
+
+body {
+	font-family: var(--default-font);
+	font-size: 13px;
+	line-height: 16px;
+	font-weight: 400;
+
+	background-color: var(bg-color);
+	color: var(--text-color);
+	color-scheme: var(--tg-color-scheme);
+	margin: 0;
+	padding: 0;
+	width: 1px;
+	min-width: 100%;
+
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: var(--text-color);
+}
+
+p {
+	color: var(--hint-color);
+}
+
+a {
+	color: var(--link-color);
+	text-decoration: none;
+}
+
+div.divider {
+	height: 0.5px;
+	background-color: var(--hint-color);
+}
+
