@@ -27,6 +27,21 @@ namespace server_side.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Links",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    Url = table.Column<string>(type: "longtext", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Links", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserGroupRelations",
                 columns: table => new
                 {
@@ -45,6 +60,9 @@ namespace server_side.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Links");
 
             migrationBuilder.DropTable(
                 name: "UserGroupRelations");

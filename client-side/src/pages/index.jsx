@@ -32,67 +32,67 @@ const HomePage = () => {
         navigate(`/groups/${id}`);
     }
 
+
+    if (error) {
+        return (
+            <div className="center">
+                <Lottie
+                    options={animationOptions(animation.loading_animation)}
+                    height={"50%"}
+                    width={"50%"}
+                    style={{ margin: "10px" }}
+                />
+                <p>Something went wrong( Try again later</p>
+            </div>
+        )
+    }
+
     if (!isLoaded) {
         return (
             <div className="center">
                 <div className="loader" />
             </div>
         )
-    } else {
-        if (groups.length !== 0) {
-            return (
-                <div>
-                    {
-                        groups.map((group, index) => 
-                        <div className="card" key={index} onClick={() => navigateToGroup(group.id)}>
-                            <div className="avatar md" style={{marginRight: "10px"}}>
-                                <h3 className="avatar-text">{group.name.slice(0,2)}</h3>
-                            </div>
-                            <div className="card-text-block">
-                                <h3 className="card-text">{group.name}</h3>
-                                <p className="card-text">{group.description}</p>
-                            </div>
-                        </div>)
-                    }
-                    <MainButton
-                        text="Create group"
-                        onClick={navigateToCreateGroup} />
-                </div>
-            )
-        } else {
-            if (error) {
-                return (
-                    <div className="center">
-                        <Lottie 
-                            options={animationOptions(animation.loading_animation)}
-                            height={"50%"}
-                            width={"50%"}
-                            style={{margin: "10px"}}
-                        />         
-                        <p>Something went wrong( Try again later</p>       
-                    </div>
-                )
-            } else {
-                return (
-                    <div className="center">
-                        <Lottie 
-                            options={animationOptions(animation.nothing_here_animation)}
-                            height={"50%"}
-                            width={"50%"}
-                            style={{margin: "10px"}}
-                        />         
-                        <p>You are not a member of any groups</p>       
-                        <button 
-                            onClick={navigateToCreateGroup} 
-                            style={{ width: "80%" }}>
-                                Create group
-                        </button>
-                    </div>
-                )
-            }
-        }
     }
 
+    if (groups.length === 0) {
+        return (
+            <div className="center">
+                <Lottie
+                    options={animationOptions(animation.nothing_here_animation)}
+                    height={"50%"}
+                    width={"50%"}
+                    style={{ margin: "10px" }}
+                />
+                <p>You are not a member of any groups</p>
+                <button
+                    onClick={navigateToCreateGroup}
+                    style={{ width: "80%" }}>
+                    Create group
+                </button>
+            </div>
+        )
+    }
+
+    return (
+        <div>
+            {
+                groups.map((group, index) =>
+                    <div className="card" key={index} onClick={() => navigateToGroup(group.id)}>
+                        <div className="avatar md" style={{ marginRight: "10px" }}>
+                            <h3 className="avatar-text">{group.name.slice(0, 2)}</h3>
+                        </div>
+                        <div className="card-text-block">
+                            <h3 className="card-text">{group.name}</h3>
+                            <p className="card-text">{group.description}</p>
+                        </div>
+                    </div>)
+            }
+            <MainButton
+                text="Create group"
+                onClick={navigateToCreateGroup} />
+        </div>
+    )
 }
 
 export default HomePage;

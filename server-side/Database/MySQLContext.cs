@@ -8,7 +8,8 @@ namespace server_side.Database
     {
         public DbSet<Group> Groups { get; set; }
         public DbSet<UserGroupRelation> UserGroupRelations { get; set; }
-
+        public DbSet<Link> Links { get; set; }
+    
         public MySQLContext(DbContextOptions<MySQLContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {

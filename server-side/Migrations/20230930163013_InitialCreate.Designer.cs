@@ -10,7 +10,7 @@ using server_side.Database;
 namespace server_side.Migrations
 {
     [DbContext(typeof(MySQLContext))]
-    [Migration("20230928190809_InitialCreate")]
+    [Migration("20230930163013_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,6 +44,28 @@ namespace server_side.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("server_side.Models.Link", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Links");
                 });
 
             modelBuilder.Entity("server_side.Models.UserGroupRelation", b =>

@@ -7,6 +7,7 @@ namespace server_side.Extensions.Services
     {
         public static IServiceCollection AddServices(this IServiceCollection services) {
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<ILinkService, LinkService>();
 
             return services;
         }

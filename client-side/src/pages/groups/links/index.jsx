@@ -1,0 +1,94 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import API from "../../../api";
+import WebApp from "@twa-dev/sdk";
+import { MainButton, BackButton } from '@twa-dev/sdk/react';
+import Lottie from "react-lottie";
+import { animation, animationOptions } from "../../../Animations";
+
+const LinksPage = () => {
+    const params = useParams();
+    const navigate = useNavigate();
+
+    const [links, setLinks] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        API.links.getByGroup(params.groupId, WebApp.initData)
+            .then((result) => {
+                setLinks(result);
+                setIsLoaded(true);
+            }, (error) => {
+                setError(error);
+                setIsLoaded(true);
+            })
+    }, []);
+
+    const navigateToCreateLink = () => {
+        navigate(`/groups/${params.groupId}/links/create`);
+    }
+
+    if (error) {
+        return (
+            <div className="center">
+                <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
+                <Lottie
+                    options={animationOptions(animation.loading_animation)}
+                    height={"50%"}
+                    width={"50%"}
+                    style={{ margin: "10px" }}
+                />
+                <p>Something went wrong, while fetching links</p>
+            </div>
+        )
+    }
+
+    if (!isLoaded) {
+        return (
+            <div className="center">
+                <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
+                <div className="loader" />
+            </div>
+        )
+    }
+
+    if (links.length === 0) {
+        return (
+            <div className="center">
+                <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
+                <Lottie
+                    options={animationOptions(animation.nothing_here_animation)}
+                    height={"50%"}
+                    width={"50%"}
+                    style={{ margin: "10px" }}
+                />
+                <p>There aren`t any links in this group yet</p>
+                <button
+                    onClick={navigateToCreateLink}
+                    style={{ width: "80%" }}>
+                    Create link
+                </button>
+            </div>
+        )
+    }
+
+    return (
+        <div className="center">
+            <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
+            {
+                links.map((link, index) => 
+                <button className={"primary-tinned"} key={index}
+                    onClick={() => WebApp.openLink(link.url)}>
+                    {link.name}
+                </button>)
+            }
+
+            <MainButton
+                text="Create link"
+                onClick={navigateToCreateLink} />
+        </div>
+    )
+}
+
+export default LinksPage;

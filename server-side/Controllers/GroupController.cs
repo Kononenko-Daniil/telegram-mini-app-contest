@@ -3,6 +3,7 @@ using server_side.DTOs;
 using server_side.Middlewares.UseTelegramUser;
 using server_side.Models;
 using server_side.Services;
+using server_side.Telegram.UserServices;
 
 namespace server_side.Controllers
 {
@@ -11,17 +12,19 @@ namespace server_side.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IGroupService _groupService;
+        private readonly IUserService _userService;
 
-        public GroupController(IGroupService groupService)
+        public GroupController(IGroupService groupService, IUserService userService)
         {
             _groupService = groupService;
+            _userService = userService;
         }
 
         [HttpGet]
         [Route("my")]
         [UseTelegramUser]
         public async Task<ActionResult<IEnumerable<Group>>> GetMyGroups() {
-            TelegramUser? user = GetUserFromContext(HttpContext);
+            TelegramUser? user = _userService.Get(HttpContext);
 
             if (user is null) {
                 return Unauthorized();
@@ -36,7 +39,7 @@ namespace server_side.Controllers
         [Route("{id:int}")]
         [UseTelegramUser]
         public async Task<ActionResult<Group>> GetGroupById(int id) {
-            TelegramUser? user = GetUserFromContext(HttpContext);
+            TelegramUser? user = _userService.Get(HttpContext);
 
             if (user is null) {
                 return Unauthorized();
@@ -55,7 +58,7 @@ namespace server_side.Controllers
         [Route("create")]
         [UseTelegramUser]
         public async Task<ActionResult<int>> CreateGroup([FromBody] CreateGroupInput input) {
-            TelegramUser? user = GetUserFromContext(HttpContext);
+            TelegramUser? user = _userService.Get(HttpContext);
 
             if (user is null) {
                 return Unauthorized();
@@ -64,13 +67,6 @@ namespace server_side.Controllers
             var groupId = await _groupService.Create(input, user.Id);
 
             return groupId;
-        }
-
-        private TelegramUser? GetUserFromContext(HttpContext context) {
-            TelegramUser? user = context.Items[TelegramUserMiddleware.TELEGRAM_USER_CONTEXT_KEY]
-                as TelegramUser;
-
-            return user;
         }
     }
 }

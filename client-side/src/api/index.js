@@ -1,7 +1,9 @@
 import groups from './groups';
+import links from './links';
 
 const API = {
-    groups
+    groups,
+    links
 }
 
 export default API;
