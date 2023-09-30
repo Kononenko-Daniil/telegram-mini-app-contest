@@ -10,8 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddTelegram(builder.Configuration);
 builder.Services.AddDatabase(DB_CONNECTION_STRING);
+builder.Services.AddServices();
 
 builder.Services.AddCors(p => p.AddPolicy(ALLOW_ORIGINS, policy => {
     policy.AllowAnyOrigin()

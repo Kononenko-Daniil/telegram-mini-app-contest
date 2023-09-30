@@ -1,0 +1,33 @@
+@import "./var.module.css";
+
+input[type="text"] {
+    width: 300px;
+    height: 20px;
+    border-color: var(--secondary-bg-color);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 15px;
+    background-color: var(--bg-color);
+
+    transition: border-color 0.3s;
+    
+    outline: none;
+}
+
+input[type="text"]:disabled {
+    color: var(--hint-color);
+}
+
+input[type=text]:focus {
+    border-color: var(--primary-color);
+}
+
+span.text-input-label {
+    font-family: var(--default-font);
+    color: var(--hint-color);
+    margin: 10px;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}

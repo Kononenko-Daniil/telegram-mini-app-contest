@@ -12,8 +12,13 @@
   "dependencies": {
     "@twa-dev/sdk": "^6.9.0",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
+    "lottie-web": "^5.12.2",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-bodymovin": "^2.0.0",
+    "react-dom": "^18.2.0",
+    "react-lottie": "^1.2.3",
+    "react-router-dom": "^6.16.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
@@ -24,5 +29,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "vite": "^4.4.5"
+  },
+  "overrides": {
+    "react-lottie": {
+      "react": "^0.14.7 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0"
+    }
   }
 }

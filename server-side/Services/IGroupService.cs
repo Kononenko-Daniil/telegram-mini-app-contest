@@ -1,4 +1,5 @@
-﻿using server_side.Models;
+﻿using server_side.DTOs;
+using server_side.Models;
 
 namespace server_side.Services
 {
@@ -10,5 +11,6 @@ namespace server_side.Services
             int groupId,
             out UserGroupRelation? relation);
 
+        public Task<int> Create(CreateGroupInput input, int ownerId);
     }
 }

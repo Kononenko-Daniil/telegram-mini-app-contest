@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using server_side.DTOs;
 using server_side.Middlewares.UseTelegramUser;
 using server_side.Models;
 using server_side.Services;
@@ -33,6 +34,7 @@ namespace server_side.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
+        [UseTelegramUser]
         public async Task<ActionResult<Group>> GetGroupById(int id) {
             TelegramUser? user = GetUserFromContext(HttpContext);
 
@@ -47,6 +49,21 @@ namespace server_side.Controllers
             var group = await _groupService.GetById(id);
 
             return Ok(group);
+        }
+
+        [HttpPost]
+        [Route("create")]
+        [UseTelegramUser]
+        public async Task<ActionResult<int>> CreateGroup([FromBody] CreateGroupInput input) {
+            TelegramUser? user = GetUserFromContext(HttpContext);
+
+            if (user is null) {
+                return Unauthorized();
+            }
+
+            var groupId = await _groupService.Create(input, user.Id);
+
+            return groupId;
         }
 
         private TelegramUser? GetUserFromContext(HttpContext context) {

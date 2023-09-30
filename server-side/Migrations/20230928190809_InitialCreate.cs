@@ -18,7 +18,8 @@ namespace server_side.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: false)
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    AccessCode = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -7,6 +7,8 @@
 	--button-text-color: var(--tg-theme-button-text-color);
 	--secondary-bg-color: var(--tg-theme-secondary-bg-color);
 
+	--color-scheme: var(--tg-color-scheme);
+
 	--primary-color: rgba(80, 168, 235, 1);
 	--primary-tinned-color: rgba(80, 168, 235, 0.15);
 	--danger-color: rgb(230, 58, 58, 1);

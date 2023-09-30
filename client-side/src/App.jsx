@@ -1,43 +1,19 @@
-import WebApp from '@twa-dev/sdk'
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import HomePage from './pages';
+import CreateGroupPage from './pages/groups/create';
+import GroupByIdPage from './pages/groups/id';
 
 function App() {
-    const handleClick = () => {
-        WebApp.showPopup({
-            title: "Hello", 
-            message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-            buttons: [
-                {
-                    id: "OK-button",
-                    type: "ok",
-                },
-                {
-                    id: "CLOSE-button",
-                    type: "close"
-                }
-            ]
-        }, (id) => {console.log(id)});
-    }
-
     return (
-        <div style={{flexDirection: "column", display: "flex", padding: "5px"}}>
-            <button className="regular primary" onClick={handleClick}>Hello</button>
-            <button className="regular primary-tinned" onClick={handleClick}>Hello</button>
-            <button className="regular danger" onClick={handleClick}>Hello</button>
-            <button className="regular danger-tinned" onClick={handleClick}>Hello</button>
-            <button className="regular success" onClick={handleClick}>Hello</button>
-            <button className="regular success-tinned" onClick={handleClick}>Hello</button>
-
-            <button className="regular success-tinned sm" onClick={handleClick}>Hello</button>
-
-            <h1>Hello</h1>
-            <div className="divider" />
-            <div className='tag primary'>H/W</div>
-            <p>Hint color is good</p>
-            <a href="/">Hello link</a>
-
-            <div className='avatar sm'>😀</div>
-            <div className='avatar md'>😱</div>
-            <div className='avatar lg'>👨‍🏫</div>
+        <div style={{display: "flex", flexDirection: "column", padding: "5px"}}>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/groups" element={<HomePage />} />
+                    <Route path="/groups/create" element={<CreateGroupPage />} />
+                    <Route path="/groups/:id" element={<GroupByIdPage />} />
+                </Routes>
+            </Router>
         </div>
     )
 }

@@ -10,7 +10,7 @@ using server_side.Database;
 namespace server_side.Migrations
 {
     [DbContext(typeof(MySQLContext))]
-    [Migration("20230927130448_InitialCreate")]
+    [Migration("20230928190809_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -28,6 +28,10 @@ namespace server_side.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("AccessCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .IsRequired()
