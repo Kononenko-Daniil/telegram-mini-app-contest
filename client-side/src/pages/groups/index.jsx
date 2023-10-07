@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
-import API from "../api";
+import API from "../../api";
 import WebApp from "@twa-dev/sdk";
 import Lottie from "react-lottie";
-import { animation, animationOptions } from "../Animations";
+import { animation, animationOptions } from "../../Animations";
 import { useNavigate } from "react-router-dom";
 import { MainButton } from '@twa-dev/sdk/react';
 
-const HomePage = () => {
+const GroupsPage = () => {
     const navigate = useNavigate();
 
-    const [isLoaded, setIsLoaded] = useState(false);
     const [groups, setGroups] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -24,14 +24,13 @@ const HomePage = () => {
             });
     }, []);
 
-    const navigateToCreateGroup = () => {
-        navigate("/groups/create");
-    }
-
-    const navigateToGroup = (id) => {
+    const navigateToGroupById = (id) => {
         navigate(`/groups/${id}`);
     }
 
+    const navigateToGroupCreate = () => {
+        navigate("/groups/create");
+    }
 
     if (error) {
         return (
@@ -42,7 +41,7 @@ const HomePage = () => {
                     width={"50%"}
                     style={{ margin: "10px" }}
                 />
-                <p>Something went wrong( Try again later</p>
+                <p>Something went wrong</p>
             </div>
         )
     }
@@ -64,15 +63,15 @@ const HomePage = () => {
                     width={"50%"}
                     style={{ margin: "10px" }}
                 />
-                <p>You are not a member of any groups</p>
+                <p>You are not a member of any group</p>
                 <button
-                    onClick={navigateToCreateGroup}
+                    onClick={navigateToGroupCreate}
                     style={{ width: "80%", marginBottom: "10px" }}>
                     Join existing group
                 </button>
                 <button
                     className="primary-tinned"
-                    onClick={navigateToCreateGroup}
+                    onClick={navigateToGroupCreate}
                     style={{ width: "80%" }}>
                     Create group
                 </button>
@@ -83,27 +82,30 @@ const HomePage = () => {
     return (
         <div className="center">
             <button
-                onClick={navigateToCreateGroup}
+                onClick={navigateToGroupCreate}
                 style={{ width: "80%", marginBottom: "10px" }}>
                 Join existing group
             </button>
+
             {
                 groups.map((group, index) =>
-                    <div className="card" key={index} onClick={() => navigateToGroup(group.id)}>
+                    <div className="card" key={index} onClick={() => navigateToGroupById(group.id)}>
                         <div className="avatar md" style={{ marginRight: "10px" }}>
                             <h3 className="avatar-text">{group.name.slice(0, 2)}</h3>
                         </div>
+
                         <div className="card-text-block">
                             <h3 className="card-text">{group.name}</h3>
                             <p className="card-text">{group.description}</p>
                         </div>
                     </div>)
             }
+
             <MainButton
                 text="Create group"
-                onClick={navigateToCreateGroup} />
+                onClick={navigateToGroupCreate} />
         </div>
     )
 }
 
-export default HomePage;
+export default GroupsPage;

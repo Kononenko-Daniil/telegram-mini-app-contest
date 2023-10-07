@@ -10,8 +10,8 @@ const HometasksPage = () => {
     const navigate = useNavigate();
     const params = useParams();
 
-    const [isLoaded, setIsLoaded] = useState(false);
     const [hometasks, setHometasks] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const HometasksPage = () => {
         navigate(-1);
     }
 
-    const navigateToHometask = (id) => {
+    const navigateToHometaskById = (id) => {
         navigate(`/groups/${params.groupId}/hometasks/${id}`);
     }
 
@@ -47,6 +47,7 @@ const HometasksPage = () => {
                     width={"50%"}
                     style={{ margin: "10px" }}
                 />
+
                 <p>Something went wrong, while fetching hometasks</p>
             </div>
         )
@@ -84,8 +85,10 @@ const HometasksPage = () => {
             <BackButton onClick={navigateBack} />
             {
                 hometasks.map((hometask, index) =>
-                    <div className="card" key={index}
-                        onClick={() => navigateToHometask(hometask.id)}>
+                    <div 
+                        className="card" 
+                        key={index}
+                        onClick={() => navigateToHometaskById(hometask.id)}>
                         <div
                             className="card-text-block"
                             style={{ width: "100%", paddingLeft: "10px" }}>

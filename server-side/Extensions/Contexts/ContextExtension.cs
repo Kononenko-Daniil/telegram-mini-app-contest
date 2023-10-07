@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server_side.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace server_side.Extensions.Contexts
 {

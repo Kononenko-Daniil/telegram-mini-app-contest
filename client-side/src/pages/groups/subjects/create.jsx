@@ -19,10 +19,6 @@ const CreateSubjectPage = () => {
     const [isLoaded, setIsLoaded] = useState(true);
     const [error, setError] = useState(null);
 
-    const navigateToSubjects = () => {
-        navigate(`/groups/${params.groupId}/subjects`);
-    }
-
     const handleCreateSubjectClick = async () => {
         const subjectInput = {
             name,
@@ -44,13 +40,14 @@ const CreateSubjectPage = () => {
             });
     }
 
-    const handleLessonTypeChange = (index) => {
-        setLessonType(index);
+    const navigateToSubjects = () => {
+        navigate(`/groups/${params.groupId}/subjects`);
     }
 
     return (
         <div className="center">
             <BackButton onClick={navigateToSubjects} />
+
             <Lottie
                 options={animationOptions(isLoaded ? animation.create_animation :
                     animation.loading_animation)}
@@ -58,7 +55,9 @@ const CreateSubjectPage = () => {
                 width={"20%"}
                 style={{ margin: "10px" }}
             />
+
             <h1>New subject</h1>
+
             <TextInput
                 style={{ margin: "5px 5px" }}
                 value={name}
@@ -67,26 +66,26 @@ const CreateSubjectPage = () => {
                 disabled={!isLoaded} />
 
             <div className="radio-group">
-                <RadioButton 
-                    index={0} 
-                    variant="" 
-                    label="NONE" 
-                    onChange={handleLessonTypeChange}
+                <RadioButton
+                    index={0}
+                    variant=""
+                    label="NONE"
+                    onChange={(index) => setLessonType(index)}
                     isChecked={lessonType == 0} />
-                <RadioButton 
-                    index={1} 
-                    variant="danger" 
-                    label="LECTURE" 
+                <RadioButton
+                    index={1}
+                    variant="danger"
+                    label="LECTURE"
                     onChange={handleLessonTypeChange}
                     isChecked={lessonType == 1} />
-                <RadioButton 
-                    index={2} 
-                    variant="success" 
-                    label="PRACTISE" 
+                <RadioButton
+                    index={2}
+                    variant="success"
+                    label="PRACTISE"
                     onChange={handleLessonTypeChange}
                     isChecked={lessonType == 2} />
             </div>
-            
+
             <TextInput
                 style={{ margin: "5px 5px" }}
                 value={teacherName}

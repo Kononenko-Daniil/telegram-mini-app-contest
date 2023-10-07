@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using server_side.Database;
 using server_side.DTOs;
+using server_side.Exceptions;
 using server_side.Models;
-using System.Text.RegularExpressions;
 
 namespace server_side.Services
 {
@@ -31,7 +31,7 @@ namespace server_side.Services
             Hometask? hometask = await _dbContext.Hometasks
                 .FirstOrDefaultAsync(h => h.Id == id);
             if (hometask == null) {
-                throw new Exception();
+                throw new NotFoundException();
             }
 
             _dbContext.Hometasks.Remove(hometask);
@@ -42,9 +42,9 @@ namespace server_side.Services
 
         public async Task<IEnumerable<Hometask>> GetByGroup(int groupId) {
             var hometasks = await _dbContext.Hometasks
-                .Join(_dbContext.Subjects.Where(s => s.GroupId == groupId), 
-                    h => h.SubjectId, 
-                    s => s.Id, 
+                .Join(_dbContext.Subjects.Where(s => s.GroupId == groupId),
+                    h => h.SubjectId,
+                    s => s.Id,
                     (h, s) => h)
                 .ToListAsync();
 
@@ -54,7 +54,7 @@ namespace server_side.Services
         public async Task<Hometask> GetById(int id) {
             Hometask? hometask = await _dbContext.Hometasks.FirstOrDefaultAsync(h => h.Id == id);
             if (hometask == null) {
-                throw new Exception();
+                throw new NotFoundException();
             }
 
             return hometask;

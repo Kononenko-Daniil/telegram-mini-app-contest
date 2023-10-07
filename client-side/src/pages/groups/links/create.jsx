@@ -13,7 +13,6 @@ const CreateLinkPage = () => {
 
     const [name, setName] = useState("");
     const [url, setUrl] = useState("");
-
     const [isLoaded, setIsLoaded] = useState(true);
     const [error, setError] = useState(null);
 
@@ -26,12 +25,12 @@ const CreateLinkPage = () => {
             name,
             url
         };
-        
+
         setIsLoaded(false);
         await API.links.create(linkInput, params.groupId, WebApp.initData)
             .then((result) => {
                 setIsLoaded(true);
-                
+
                 navigateToLinks();
             }, (error) => {
                 setIsLoaded(true);
@@ -44,14 +43,17 @@ const CreateLinkPage = () => {
     return (
         <div className="center">
             <BackButton onClick={navigateToLinks} />
+
             <Lottie
-                options={animationOptions(isLoaded ? animation.create_animation : 
+                options={animationOptions(isLoaded ? animation.create_animation :
                     animation.loading_animation)}
                 height={"20%"}
                 width={"20%"}
                 style={{ margin: "10px" }}
             />
+
             <h1>New link</h1>
+
             <TextInput
                 style={{ margin: "5px 5px" }}
                 value={name}

@@ -10,8 +10,8 @@ const HometaskByIdPage = () => {
     const navigate = useNavigate();
     const params = useParams();
 
-    const [isLoaded, setIsLoaded] = useState(false);
     const [hometask, setHometask] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -67,6 +67,7 @@ const HometaskByIdPage = () => {
                 "success" : "danger"}`} style={{margin: "5px 0px 0px 0px"}}>
                 {new Date(hometask.deadline).toLocaleString()}
             </div>
+            
             <h3 style={{lineHeight: "30px"}}>{hometask.content}</h3>
         </div>
     )

@@ -10,16 +10,17 @@ namespace server_side.Controllers
 {
     [ApiController]
     [Route("groups/{groupId:int}/links")]
-    public class LinkContoller : ControllerBase {
+    public class LinkController : ControllerBase
+    {
         private readonly IUserService _userService;
         private readonly ILinkService _linkService;
 
-        public LinkContoller(IUserService userService, ILinkService linkService) {
+        public LinkController(IUserService userService, ILinkService linkService) {
             _linkService = linkService;
             _userService = userService;
         }
 
-        [HttpGet("")]
+        [HttpGet]
         [UseTelegramUser]
         public async Task<ActionResult<IEnumerable<Link>>> GetLinks(int groupId) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -37,7 +38,8 @@ namespace server_side.Controllers
             return Ok(links);
         }
 
-        [HttpPost("create")]
+        [HttpPost]
+        [Route("create")]
         [UseTelegramUser]
         public async Task<ActionResult<int>> CreateLink(int groupId, [FromBody] CreateLinkInput input) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -55,7 +57,8 @@ namespace server_side.Controllers
             return Ok(linkId);
         }
 
-        [HttpPost("{id:int}/delete")]
+        [HttpPost]
+        [Route("{id:int}/delete")]
         [UseTelegramUser]
         public async Task<ActionResult<bool>> DeleteLink(int groupId, int id) {
             TelegramUser? user = _userService.Get(HttpContext);

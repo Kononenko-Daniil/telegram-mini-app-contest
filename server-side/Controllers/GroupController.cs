@@ -5,7 +5,6 @@ using server_side.Models;
 using server_side.Services;
 using server_side.Telegram.UserServices;
 using server_side.Types.Enums;
-using System.ComponentModel;
 
 namespace server_side.Controllers
 {
@@ -17,8 +16,9 @@ namespace server_side.Controllers
         private readonly IUserService _userService;
         private readonly IHometaskService _hometaskService;
 
-        public GroupController(IGroupService groupService, IUserService userService, IHometaskService hometaskService)
-        {
+        public GroupController(IGroupService groupService,
+            IUserService userService,
+            IHometaskService hometaskService) {
             _groupService = groupService;
             _userService = userService;
             _hometaskService = hometaskService;
@@ -88,7 +88,8 @@ namespace server_side.Controllers
             return Ok();
         }
 
-        [HttpGet("{id:int}/hometasks")]
+        [HttpGet]
+        [Route("{id:int}/hometasks")]
         [UseTelegramUser]
         public async Task<ActionResult<IEnumerable<Hometask>>> GetGroupHometasks(int id) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -106,7 +107,8 @@ namespace server_side.Controllers
             return Ok(hometasks);
         }
 
-        [HttpGet("{id:int}/hometasks/{hometaskId:int}")]
+        [HttpGet]
+        [Route("{id:int}/hometasks/{hometaskId:int}")]
         [UseTelegramUser]
         public async Task<ActionResult<Hometask>> GetHometaskById(int id, int hometaskId) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -124,7 +126,8 @@ namespace server_side.Controllers
             return Ok(hometask);
         }
 
-        [HttpPost("{id:int}/hometasks/{hometaskId:int}/delete")]
+        [HttpPost]
+        [Route("{id:int}/hometasks/{hometaskId:int}/delete")]
         [UseTelegramUser]
         public async Task<ActionResult<bool>> DeleteHometask(int id, int groupId) {
             TelegramUser? user = _userService.Get(HttpContext);

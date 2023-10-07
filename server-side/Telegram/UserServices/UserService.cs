@@ -9,8 +9,7 @@ namespace server_side.Telegram.UserServices
     {
         private readonly IGroupService _groupService;
 
-        public UserService(IGroupService groupService)
-        {
+        public UserService(IGroupService groupService) {
             _groupService = groupService;
         }
 
@@ -21,7 +20,8 @@ namespace server_side.Telegram.UserServices
             return user;
         }
 
-        public async Task<bool> IsAuthorized(int userId, int groupId, params UserGroupRelationType[] notAllowedTypes) {
+        public async Task<bool> IsAuthorized(int userId, int groupId, 
+            params UserGroupRelationType[] notAllowedTypes) {
             var userRelation = await _groupService.GetUserGroupRelation(userId, groupId);
 
             if (userRelation == null) {

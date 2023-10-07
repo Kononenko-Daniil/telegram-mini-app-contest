@@ -12,11 +12,10 @@ const CreateHometaskPage = () => {
 
     const [content, setContent] = useState("");
     const [deadline, setDeadline] = useState("");
-
     const [isLoaded, setIsLoaded] = useState(true);
     const [error, setError] = useState(null);
 
-    const navigateToSubject = () => {
+    const navigateToSubjectById = () => {
         navigate(`/groups/${params.groupId}/subjects/${params.id}`);
     }
 
@@ -31,7 +30,7 @@ const CreateHometaskPage = () => {
             .then((result) => {
                 setIsLoaded(true);
                 
-                navigateToSubject();
+                navigateToSubjectById();
             }, (error) => {
                 setIsLoaded(true);
                 setError(error);
@@ -42,7 +41,7 @@ const CreateHometaskPage = () => {
 
     return (
         <div className="center">
-            <BackButton onClick={navigateToSubject} />
+            <BackButton onClick={navigateToSubjectById} />
             <Lottie
                 options={animationOptions(isLoaded ? animation.create_animation : 
                     animation.loading_animation)}
@@ -50,14 +49,18 @@ const CreateHometaskPage = () => {
                 width={"20%"}
                 style={{ margin: "10px" }}
             />
+
             <h1>New hometask</h1>
-            <input type="datetime-local" defaultValue={deadline} onChange={(e) => {
-                setDeadline(e.target.value);
-                console.log(e.target.value)
-            }} />
+
+            <input 
+                type="datetime-local" 
+                value={deadline} 
+                onChange={(e) => setDeadline(e.target.value)} />
+
             <span className={`text-input-label`}>
                 ISO: {deadline ? new Date(deadline).toISOString() : 'not specified'}
             </span>
+            
             <textarea 
                 style={{ margin: "5px 5px", maxWidth: "90%" }}
                 value={content}

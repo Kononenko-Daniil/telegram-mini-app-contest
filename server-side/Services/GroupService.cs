@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using server_side.Database;
 using server_side.DTOs;
+using server_side.Exceptions;
 using server_side.Models;
 using server_side.Types.Enums;
 
@@ -20,11 +21,11 @@ namespace server_side.Services
         public async Task<bool> AddUserToGroup(AddUserToGroupInput input, int userId) {
             Group? group = await _dbContext.Groups.FirstOrDefaultAsync(g => g.Id == input.GroupId);
             if (group == null) {
-                throw new Exception();
+                throw new NotFoundException();
             }
 
             if (group.AccessCode != input.AccessCode) {
-                throw new Exception();
+                throw new NotFoundException();
             }
 
             UserGroupRelation relation = new UserGroupRelation {
@@ -40,28 +41,28 @@ namespace server_side.Services
         }
 
         public async Task<int> Create(CreateGroupInput input, int ownerId) {
-            using (var transaction = await _dbContext.Database.BeginTransactionAsync()) {
-                try {
-                    Group group = _mapper.Map<Group>(input);
-                    await _dbContext.Groups.AddAsync(group);
-                    await _dbContext.SaveChangesAsync();
+            using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
-                    UserGroupRelation userRelation = new UserGroupRelation() {
-                        UserId = ownerId,
-                        GroupId = group.Id,
-                        Type = UserGroupRelationType.OWNER,
-                        Nickname = input.OwnerNickname
-                    };
-                    await _dbContext.UserGroupRelations.AddAsync(userRelation);
-                    await _dbContext.SaveChangesAsync();
+            try {
+                Group group = _mapper.Map<Group>(input);
+                await _dbContext.Groups.AddAsync(group);
+                await _dbContext.SaveChangesAsync();
 
-                    await transaction.CommitAsync();
+                UserGroupRelation userRelation = new UserGroupRelation() {
+                    UserId = ownerId,
+                    GroupId = group.Id,
+                    Type = UserGroupRelationType.OWNER,
+                    Nickname = input.OwnerNickname
+                };
+                await _dbContext.UserGroupRelations.AddAsync(userRelation);
+                await _dbContext.SaveChangesAsync();
 
-                    return group.Id;
-                } catch (Exception ex) {
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+
+                return group.Id;
+            } catch (Exception) {
+                await transaction.RollbackAsync();
+                throw;
             }
         }
 
@@ -97,7 +98,7 @@ namespace server_side.Services
             var group = await _dbContext.Groups.FirstOrDefaultAsync(g => g.Id == id);
 
             if (group == null) {
-                throw new Exception(); // TODO: CUSTOM EXCEPTION
+                throw new NotFoundException();
             }
 
             return group;
@@ -119,7 +120,7 @@ namespace server_side.Services
                 .FirstOrDefaultAsync(ugr => ugr.UserId == userId && ugr.GroupId == groupId);
 
             if (relation is null) {
-                throw new Exception();
+                throw new NotFoundException();
             }
 
             return relation;

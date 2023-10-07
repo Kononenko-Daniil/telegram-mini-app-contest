@@ -10,9 +10,9 @@ const SubjectByIdPage = () => {
     const navigate = useNavigate();
     const params = useParams();
 
-    const [isLoaded, setIsLoaded] = useState(false);
     const [subject, setSubject] = useState(null);
     const [hometasks, setHometasks] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -43,11 +43,11 @@ const SubjectByIdPage = () => {
         navigate(`/groups/${params.groupId}/subjects/`);
     }
 
-    const navigateToHometask = (id) => {
+    const navigateToHometaskById = (id) => {
         navigate(`/groups/${params.groupId}/hometasks/${id}`);
     }
 
-    const navigateToCreateHometask = () => {
+    const navigateToHometaskCreate = () => {
         navigate(`/groups/${params.groupId}/subjects/${params.id}/hometasks/create`);
     }
 
@@ -66,6 +66,7 @@ const SubjectByIdPage = () => {
         return (
             <div className="center">
                 <BackButton onClick={navigateToSubjects} />
+
                 <div className="loader" />
             </div>
         )
@@ -89,7 +90,8 @@ const SubjectByIdPage = () => {
 
     return (
         <div className='center'>
-            <BackButton onClick={() => navigate("/")} />
+            <BackButton onClick={navigateToSubjects} />
+            
             <div style={{ overflow: "hidden" }} className='center'>
                 <div className={`tag ${parseLessonType(subject.lessonType).variant}`}>
                     {parseLessonType(subject.lessonType).text}
@@ -101,12 +103,12 @@ const SubjectByIdPage = () => {
             {
                 hometasks.map((hometask, index) =>
                     <div className="card" key={index}
-                        onClick={() => navigateToHometask(hometask.id)}>
+                        onClick={() => navigateToHometaskById(hometask.id)}>
                         <div
                             className="card-text-block"
                             style={{ width: "100%", paddingLeft: "10px" }}>
-                            <div className={`tag ${Date.now() < new Date(hometask.deadline) ? 
-                                "success" : "danger"}`} style={{margin: "5px 0px 0px 0px"}}>
+                            <div className={`tag ${Date.now() < new Date(hometask.deadline) ?
+                                "success" : "danger"}`} style={{ margin: "5px 0px 0px 0px" }}>
                                 {new Date(hometask.deadline).toLocaleString()}
                             </div>
                             <h3 className="card-text">{hometask.content}</h3>
@@ -116,7 +118,7 @@ const SubjectByIdPage = () => {
 
             <MainButton
                 text="Create hometask"
-                onClick={navigateToCreateHometask} />
+                onClick={navigateToHometaskCreate} />
         </div>
     )
 }

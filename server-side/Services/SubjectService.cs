@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using server_side.Database;
 using server_side.DTOs;
+using server_side.Exceptions;
 using server_side.Models;
 
 namespace server_side.Services
@@ -11,8 +12,7 @@ namespace server_side.Services
         private readonly IMapper _mapper;
         private readonly MySQLContext _dbContext;
 
-        public SubjectService(IMapper mapper, MySQLContext dbContext)
-        {
+        public SubjectService(IMapper mapper, MySQLContext dbContext) {
             _dbContext = dbContext;
             _mapper = mapper;
         }
@@ -54,7 +54,7 @@ namespace server_side.Services
             var subject = await _dbContext.Subjects.FirstOrDefaultAsync(s => s.Id == id);
 
             if (subject == null) {
-                throw new Exception(); // TODO: CUSTOM EXCEPTION
+                throw new NotFoundException();
             }
 
             return subject;

@@ -30,8 +30,7 @@ const CreateGroupPage = () => {
         await API.groups.create(groupInput, WebApp.initData)
             .then((result) => {
                 setIsLoaded(true);
-
-                navigate("/");
+                navigateHome();
             }, (error) => {
                 setIsLoaded(true);
                 setError(error);
@@ -40,9 +39,14 @@ const CreateGroupPage = () => {
             });
     }
 
+    const navigateHome = () => {
+        navigate("/")
+    }
+
     return (
         <div className="center">
-            <BackButton onClick={() => navigate("/")} />
+            <BackButton onClick={navigateHome} />
+
             <Lottie
                 options={animationOptions(isLoaded ? animation.create_animation :
                     animation.loading_animation)}
@@ -50,7 +54,9 @@ const CreateGroupPage = () => {
                 width={"20%"}
                 style={{ margin: "10px" }}
             />
+
             <h1>New group</h1>
+
             <TextInput
                 style={{ margin: "5px 5px" }}
                 value={name}
@@ -77,7 +83,7 @@ const CreateGroupPage = () => {
                 value={accessCode}
                 onChange={(e) => setAccessCode(e.target.value)}
                 labelText="Access code"
-                disabled={!isLoaded} /> 
+                disabled={!isLoaded} />
 
             <MainButton
                 text="Create group"

@@ -5,34 +5,14 @@ import { useState, useEffect } from 'react';
 import API from "../../api";
 import WebApp from "@twa-dev/sdk";
 import { useNavigate, useParams } from 'react-router-dom';
-
-const TabCard = (props) => {
-    const { 
-        name, 
-        description, 
-        callback, 
-        logoText 
-    } = props;
-
-    return (
-        <div className="card" onClick={callback}>
-            <div className='card-logo'>
-                {logoText}
-            </div>
-            <div className="card-text-block">
-                <h2 className="card-text">{name}</h2>
-                <p className="card-text">{description}</p>
-            </div>
-        </div>
-    )
-}
+import TabCard from '../../components/TabCard';
 
 const GroupByIdPage = () => {
     const navigate = useNavigate();
     const params = useParams();
 
-    const [isLoaded, setIsLoaded] = useState(false);
     const [group, setGroup] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -46,10 +26,19 @@ const GroupByIdPage = () => {
             });
     }, []);
 
+    const navigateHome = () => {
+        navigate("/");
+    }
+
+    const navigateToTabPage = (tabName) => {
+        navigate(`/groups/${group.id}/${tabName}`)
+    }
+
     if (!isLoaded) {
         return (
             <div className="center">
-                <BackButton onClick={() => navigate("/")} />
+                <BackButton onClick={navigateHome} />
+
                 <div className="loader" />
             </div>
         )
@@ -58,7 +47,7 @@ const GroupByIdPage = () => {
     if (error || !group) {
         return (
             <div className="center">
-                <BackButton onClick={() => navigate("/")} />
+                <BackButton onClick={navigateHome} />
 
                 <Lottie
                     options={animationOptions(animation.nothing_here_animation)}
@@ -66,21 +55,25 @@ const GroupByIdPage = () => {
                     width={"50%"}
                     style={{ margin: "10px" }}
                 />
+
                 <p>There isn`t any group yet</p>
 
                 <MainButton
-                    text="To my groups"
-                    onClick={() => navigate("/")} />
+                    text="My groups"
+                    onClick={navigateHome} />
             </div>
         )
     }
 
     return (
         <div className='center'>
-            <BackButton onClick={() => navigate("/")} />
-            <div style={{overflow: "hidden"}} className='center'>
+            <BackButton onClick={navigateHome} />
+
+            <div style={{ overflow: "hidden" }} className='center'>
                 <div className='avatar lg'>
-                    <h3 className={"avatar-text"}>{group.name.slice(0, 2)}</h3>
+                    <h3 className={"avatar-text"}>
+                        {group.name.slice(0, 2)}
+                    </h3>
                 </div>
                 <h1>{group.name}</h1>
                 <p>{group.description}</p>
@@ -90,19 +83,19 @@ const GroupByIdPage = () => {
                 name={"Hometasks"}
                 description={"View your hometasks"}
                 logoText={"👨‍🏫"}
-                callback={() => navigate(`/groups/${group.id}/hometasks`)} />
+                onClick={() => navigateToTabPage("hometasks")} />
 
             <TabCard
                 name={"Subjects"}
                 description={"View your subjects"}
                 logoText={"📒"}
-                callback={() => navigate(`/groups/${group.id}/subjects`)} />
+                onClick={() => navigateToTabPage("subjects")} />
 
             <TabCard
                 name={"Links"}
                 description={"Useful links"}
                 logoText={"📌"}
-                callback={() => navigate(`/groups/${group.id}/links`)} />
+                onClick={() => navigateToTabPage("links")} />
         </div>
     )
 }

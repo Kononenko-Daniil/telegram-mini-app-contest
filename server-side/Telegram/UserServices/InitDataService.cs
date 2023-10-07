@@ -4,11 +4,9 @@ using server_side.Types;
 using System.Collections.Specialized;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Text.Json;
-using System.Net.Http.Json;
 
 namespace server_side.Telegram.UserServices
 {
@@ -16,8 +14,7 @@ namespace server_side.Telegram.UserServices
     {
         private readonly TelegramBotConfiguration _botConfiguration;
 
-        public InitDataService(IOptions<TelegramBotConfiguration> botConfiguration)
-        {
+        public InitDataService(IOptions<TelegramBotConfiguration> botConfiguration) {
             _botConfiguration = botConfiguration.Value;
         }
 
@@ -32,7 +29,7 @@ namespace server_side.Telegram.UserServices
 
             SortedDictionary<string, string> queryDict = QueryToSortedDictionary(query);
 
-            string dataCheckString = QueryDictionaryToString('\n', 
+            string dataCheckString = QueryDictionaryToString('\n',
                 queryDict, new string[] { InitDataKey.HASH });
 
             byte[] secretKey = HMACSHA256.HashData(Encoding.UTF8.GetBytes(CONSTANT_KEY),
@@ -42,7 +39,7 @@ namespace server_side.Telegram.UserServices
                 Encoding.UTF8.GetBytes(dataCheckString));
 
             byte[] actualHash = Convert.FromHexString(queryDict[InitDataKey.HASH]);
-        
+
             return actualHash.SequenceEqual(generatedHash);
         }
 

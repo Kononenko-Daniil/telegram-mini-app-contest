@@ -1,5 +1,4 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import HomePage from './pages';
 import CreateGroupPage from './pages/groups/create';
 import GroupByIdPage from './pages/groups/id';
 import LinksPage from './pages/groups/links';
@@ -10,14 +9,15 @@ import SubjectByIdPage from './pages/groups/subjects/id';
 import CreateHometaskPage from './pages/groups/hometasks/create';
 import HometaskByIdPage from './pages/groups/hometasks/id';
 import HometasksPage from './pages/groups/hometasks';
+import GroupsPage from './pages/groups';
 
 function App() {
     return (
         <div style={{display: "flex", flexDirection: "column", padding: "5px"}}>
             <Router>
                 <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/groups" element={<HomePage />} />
+                    <Route path="/" element={<GroupsPage />} />
+                    <Route path="/groups" element={<GroupsPage />} />
                     <Route path="/groups/create" element={<CreateGroupPage />} />
                     <Route path="/groups/:id" element={<GroupByIdPage />} />
 

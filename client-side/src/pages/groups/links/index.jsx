@@ -25,14 +25,18 @@ const LinksPage = () => {
             })
     }, []);
 
-    const navigateToCreateLink = () => {
+    const navigateToLinkCreate = () => {
         navigate(`/groups/${params.groupId}/links/create`);
+    }
+
+    const navigateToGroupById = () => {
+        navigate(`/groups/${params.groupId}`);
     }
 
     if (error) {
         return (
             <div className="center">
-                <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
+                <BackButton onClick={navigateToGroupById} />
                 <Lottie
                     options={animationOptions(animation.loading_animation)}
                     height={"50%"}
@@ -47,7 +51,7 @@ const LinksPage = () => {
     if (!isLoaded) {
         return (
             <div className="center">
-                <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
+                <BackButton onClick={navigateToGroupById} />
                 <div className="loader" />
             </div>
         )
@@ -56,7 +60,7 @@ const LinksPage = () => {
     if (links.length === 0) {
         return (
             <div className="center">
-                <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
+                <BackButton onClick={navigateToGroupById} />
                 <Lottie
                     options={animationOptions(animation.nothing_here_animation)}
                     height={"50%"}
@@ -65,7 +69,7 @@ const LinksPage = () => {
                 />
                 <p>There aren`t any links in this group yet</p>
                 <button
-                    onClick={navigateToCreateLink}
+                    onClick={navigateToLinkCreate}
                     style={{ width: "80%" }}>
                     Create link
                 </button>
@@ -75,12 +79,13 @@ const LinksPage = () => {
 
     return (
         <div className="center">
-            <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
+            <BackButton onClick={navigateToGroupById} />
+
             {
-                links.map((link, index) => 
-                    <div className="card" key={index} 
+                links.map((link, index) =>
+                    <div className="card" key={index}
                         onClick={() => WebApp.openLink(link.url)}>
-                        <div className="card-text-block" style={{marginLeft: "10px"}}>
+                        <div className="card-text-block" style={{ marginLeft: "10px" }}>
                             <h2 className="card-text">{link.name}</h2>
                             <p className="card-text">{link.url}</p>
                         </div>
@@ -89,7 +94,7 @@ const LinksPage = () => {
 
             <MainButton
                 text="Create link"
-                onClick={navigateToCreateLink} />
+                onClick={navigateToLinkCreate} />
         </div>
     )
 }

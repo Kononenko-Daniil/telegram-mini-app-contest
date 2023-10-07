@@ -1,8 +1,8 @@
 const TextInput = (props) => {
     const {
         style,
-        value, 
-        onChange, 
+        value,
+        onChange,
         labelText,
         disabled
     } = props;

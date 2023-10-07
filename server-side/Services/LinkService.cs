@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using server_side.Database;
 using server_side.DTOs;
+using server_side.Exceptions;
 using server_side.Models;
 
 namespace server_side.Services
@@ -30,7 +31,7 @@ namespace server_side.Services
             Link? link = await _dbContext.Links.FirstOrDefaultAsync(l => l.Id == id);
 
             if (link == null) {
-                throw new Exception(); // TODO: CUSTOM EXCEPTION
+                throw new NotFoundException();
             }
 
             _dbContext.Links.Remove(link);

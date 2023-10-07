@@ -20,15 +20,14 @@ namespace server_side.Controllers
         public SubjectController(IUserService userService,
             IGroupService groupService,
             ISubjectService subjectService,
-            IHometaskService hometaskService)
-        {
+            IHometaskService hometaskService) {
             _groupService = groupService;
             _userService = userService;
             _subjectService = subjectService;
             _hometaskService = hometaskService;
         }
 
-        [HttpGet("")]
+        [HttpGet]
         [UseTelegramUser]
         public async Task<ActionResult<IEnumerable<Subject>>> GetSubjects(int groupId) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -46,7 +45,8 @@ namespace server_side.Controllers
             return Ok(subjects);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet]
+        [Route("{id:int}")]
         [UseTelegramUser]
         public async Task<ActionResult<Subject>> GetSubjectById(int groupId, int id) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -64,7 +64,8 @@ namespace server_side.Controllers
             return Ok(subject);
         }
 
-        [HttpPost("create")]
+        [HttpPost]
+        [Route("create")]
         [UseTelegramUser]
         public async Task<ActionResult<int>> CreateSubject(int groupId, [FromBody] CreateSubjectInput input) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -82,25 +83,8 @@ namespace server_side.Controllers
             return Ok(subjectId);
         }
 
-        [HttpPost("{id:int}/hometasks/create")]
-        [UseTelegramUser]
-        public async Task<ActionResult<int>> CreateHometask(int id, int groupId, [FromBody] CreateHometaskInput input) {
-            TelegramUser? user = _userService.Get(HttpContext);
-
-            if (user is null) {
-                return Unauthorized();
-            }
-
-            if (!await _userService.IsAuthorized(user.Id, groupId, UserGroupRelationType.VIEWER)) {
-                return Unauthorized();
-            }
-
-            var hometaskId = await _hometaskService.Create(input, id);
-
-            return Ok(hometaskId);
-        }
-
-        [HttpGet("{id:int}/hometasks")]
+        [HttpGet]
+        [Route("{id:int}/hometasks")]
         [UseTelegramUser]
         public async Task<ActionResult<IEnumerable<Hometask>>> GetSubjectHometasks(int id, int groupId) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -118,7 +102,27 @@ namespace server_side.Controllers
             return Ok(hometasks);
         }
 
-        [HttpPost("{id:int}/delete")]
+        [HttpPost]
+        [Route("{id:int}/hometasks/create")]
+        [UseTelegramUser]
+        public async Task<ActionResult<int>> CreateHometask(int id, int groupId, [FromBody] CreateHometaskInput input) {
+            TelegramUser? user = _userService.Get(HttpContext);
+
+            if (user is null) {
+                return Unauthorized();
+            }
+
+            if (!await _userService.IsAuthorized(user.Id, groupId, UserGroupRelationType.VIEWER)) {
+                return Unauthorized();
+            }
+
+            var hometaskId = await _hometaskService.Create(input, id);
+
+            return Ok(hometaskId);
+        }
+
+        [HttpPost]
+        [Route("{id:int}/delete")]
         [UseTelegramUser]
         public async Task<ActionResult<bool>> DeleteSubject(int groupId, int id) {
             TelegramUser? user = _userService.Get(HttpContext);
