@@ -12,10 +12,31 @@ namespace server_side.Services
         private readonly MySQLContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GroupService(IMapper mapper, MySQLContext dbContext) 
-        {
+        public GroupService(IMapper mapper, MySQLContext dbContext) {
             _mapper = mapper;
             _dbContext = dbContext;
+        }
+
+        public async Task<bool> AddUserToGroup(AddUserToGroupInput input, int userId) {
+            Group? group = await _dbContext.Groups.FirstOrDefaultAsync(g => g.Id == input.GroupId);
+            if (group == null) {
+                throw new Exception();
+            }
+
+            if (group.AccessCode != input.AccessCode) {
+                throw new Exception();
+            }
+
+            UserGroupRelation relation = new UserGroupRelation {
+                GroupId = input.GroupId,
+                UserId = userId,
+                Type = UserGroupRelationType.VIEWER
+            };
+
+            await _dbContext.UserGroupRelations.AddAsync(relation);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<int> Create(CreateGroupInput input, int ownerId) {
@@ -37,10 +58,38 @@ namespace server_side.Services
 
                     return group.Id;
                 } catch (Exception ex) {
-                    transaction.Rollback();
+                    await transaction.RollbackAsync();
                     throw;
                 }
             }
+        }
+
+        public async Task<bool> Delete(int id) {
+            Group? group = await _dbContext.Groups.FirstOrDefaultAsync(g => g.Id == id);
+            if (group == null) {
+                throw new Exception();
+            }
+
+            var userRelations = await _dbContext.UserGroupRelations
+                .Where(ugr => ugr.GroupId == id)
+                .ToListAsync();
+            var subjects = await _dbContext.Subjects
+                .Where(s => s.GroupId == id)
+                .ToListAsync();
+            var hometasks = await _dbContext.Hometasks
+                .Join(_dbContext.Subjects.Where(s => s.GroupId == id),
+                    h => h.SubjectId,
+                    s => s.Id,
+                    (h, s) => h)
+                .ToListAsync();
+
+            _dbContext.Remove(group);
+            _dbContext.Remove(userRelations);
+            _dbContext.RemoveRange(subjects);
+            _dbContext.RemoveRange(hometasks);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<Group> GetById(int id) {
@@ -56,8 +105,8 @@ namespace server_side.Services
         public async Task<IEnumerable<Group>> GetUserGroups(int userId) {
             var groups = await _dbContext.Groups
                 .Join(_dbContext.UserGroupRelations.Where(ugr => ugr.UserId == userId),
-                    g => g.Id, 
-                    ugr => ugr.GroupId, 
+                    g => g.Id,
+                    ugr => ugr.GroupId,
                     (g, ugr) => g)
                 .ToListAsync();
 

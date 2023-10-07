@@ -13,6 +13,10 @@ namespace server_side.Extensions.Contexts
                 .HasKey(e => new { e.UserId, e.GroupId });
             modelBuilder.Entity<Link>()
                .HasKey(e => new { e.Id });
+            modelBuilder.Entity<Subject>()
+               .HasKey(e => new { e.Id });
+            modelBuilder.Entity<Hometask>()
+               .HasKey(e => new { e.Id });
 
             return modelBuilder;
         }

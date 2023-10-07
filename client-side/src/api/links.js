@@ -26,7 +26,7 @@ const create = async (linkInput, groupId, initData) => {
     });
 
     if (!res.ok) {
-        throw Error("Failed to create group")
+        throw Error("Failed to create link")
     }
 
     return res.json();
@@ -42,7 +42,7 @@ const remove = async (linkId, groupId, initData) => {
     });
 
     if (!res.ok) {
-        throw Error("Failed to create group")
+        throw Error("Failed to delete link")
     }
 
     return res.json();

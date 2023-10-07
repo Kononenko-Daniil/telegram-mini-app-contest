@@ -11,6 +11,8 @@ namespace server_side.Services
             int groupId,
             out UserGroupRelation? relation);
 
+        public Task<bool> AddUserToGroup(AddUserToGroupInput input, int userId);
         public Task<int> Create(CreateGroupInput input, int ownerId);
+        public Task<bool> Delete(int id);
     }
 }

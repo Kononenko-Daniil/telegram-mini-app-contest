@@ -8,6 +8,7 @@ div.center {
 }
 
 div.card {
+    width: 100%;
     padding: 1px 5px;
     display: flex;
     flex-direction: row;
@@ -44,10 +45,8 @@ div.card-text-block {
     margin: 0px 10px;
 }
 
-div.divider {
-	background-color: var(--secondary-bg-color);
-	border-width: 0.5px 0px 0px 0px;
-	border-style: solid;
-	border-color: var(--hint-color);
-	width: 100%;
+div.radio-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

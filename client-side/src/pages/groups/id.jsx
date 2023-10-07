@@ -1,7 +1,6 @@
 import { MainButton, BackButton } from '@twa-dev/sdk/react';
 import { animation, animationOptions } from '../../Animations';
 import Lottie from "react-lottie";
-import TextInput from '../../components/TextInput';
 import { useState, useEffect } from 'react';
 import API from "../../api";
 import WebApp from "@twa-dev/sdk";
@@ -16,7 +15,7 @@ const TabCard = (props) => {
     } = props;
 
     return (
-        <div className="card" style={{ width: "100%" }} onClick={callback}>
+        <div className="card" onClick={callback}>
             <div className='card-logo'>
                 {logoText}
             </div>
@@ -77,13 +76,15 @@ const GroupByIdPage = () => {
     }
 
     return (
-        <div className='center' style={{ overflow: "hidden" }}>
+        <div className='center'>
             <BackButton onClick={() => navigate("/")} />
-            <div className='avatar lg'>
-                <h3 className={"avatar-text"}>{group.name.slice(0, 2)}</h3>
+            <div style={{overflow: "hidden"}} className='center'>
+                <div className='avatar lg'>
+                    <h3 className={"avatar-text"}>{group.name.slice(0, 2)}</h3>
+                </div>
+                <h1>{group.name}</h1>
+                <p>{group.description}</p>
             </div>
-            <h1>{group.name}</h1>
-            <p>{group.description}</p>
 
             <TabCard
                 name={"Hometasks"}

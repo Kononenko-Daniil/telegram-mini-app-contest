@@ -4,6 +4,7 @@ using server_side.Middlewares.UseTelegramUser;
 using server_side.Models;
 using server_side.Services;
 using server_side.Telegram.UserServices;
+using System.ComponentModel;
 
 namespace server_side.Controllers
 {
@@ -13,11 +14,13 @@ namespace server_side.Controllers
     {
         private readonly IGroupService _groupService;
         private readonly IUserService _userService;
+        private readonly IHometaskService _hometaskService;
 
-        public GroupController(IGroupService groupService, IUserService userService)
+        public GroupController(IGroupService groupService, IUserService userService, IHometaskService hometaskService)
         {
             _groupService = groupService;
             _userService = userService;
+            _hometaskService = hometaskService;
         }
 
         [HttpGet]
@@ -67,6 +70,57 @@ namespace server_side.Controllers
             var groupId = await _groupService.Create(input, user.Id);
 
             return groupId;
+        }
+
+        [HttpPost]
+        [Route("add-user")]
+        [UseTelegramUser]
+        public async Task<ActionResult> AddUserToGroup([FromBody] AddUserToGroupInput input) {
+            TelegramUser? user = _userService.Get(HttpContext);
+
+            if (user is null) {
+                return Unauthorized();
+            }
+
+            await _groupService.AddUserToGroup(input, user.Id);
+
+            return Ok();
+        }
+
+        [HttpPost("{id:int}/hometasks")]
+        [UseTelegramUser]
+        public async Task<ActionResult<IEnumerable<Hometask>>> GetGroupHometasks(int id) {
+            TelegramUser? user = _userService.Get(HttpContext);
+
+            if (user is null) {
+                return Unauthorized();
+            }
+
+            if (!_groupService.TryGetUserGroupRelation(user.Id, id, out UserGroupRelation? relation)) {
+                return Unauthorized();
+            }
+
+            var hometasks = await _hometaskService.GetByGroup(id);
+
+            return Ok(hometasks);
+        }
+
+        [HttpPost("{id:int}/hometasks/{hometaskId:int}")]
+        [UseTelegramUser]
+        public async Task<ActionResult<Hometask>> GetGroupHometasks(int id, int hometaskId) {
+            TelegramUser? user = _userService.Get(HttpContext);
+
+            if (user is null) {
+                return Unauthorized();
+            }
+
+            if (!_groupService.TryGetUserGroupRelation(user.Id, id, out UserGroupRelation? relation)) {
+                return Unauthorized();
+            }
+
+            var hometask = await _hometaskService.GetById(hometaskId);
+
+            return Ok(hometask);
         }
     }
 }

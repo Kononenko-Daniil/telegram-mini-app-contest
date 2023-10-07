@@ -6,18 +6,18 @@ import { MainButton, BackButton } from '@twa-dev/sdk/react';
 import Lottie from "react-lottie";
 import { animation, animationOptions } from "../../../Animations";
 
-const LinksPage = () => {
+const SubjectsPage = () => {
     const params = useParams();
     const navigate = useNavigate();
 
-    const [links, setLinks] = useState([]);
+    const [subjects, setSubjects] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        API.links.getByGroup(params.groupId, WebApp.initData)
+        API.subjects.getByGroup(params.groupId, WebApp.initData)
             .then((result) => {
-                setLinks(result);
+                setSubjects(result);
                 setIsLoaded(true);
             }, (error) => {
                 setError(error);
@@ -25,8 +25,23 @@ const LinksPage = () => {
             })
     }, []);
 
-    const navigateToCreateLink = () => {
-        navigate(`/groups/${params.groupId}/links/create`);
+    const navigateToCreateSubject = () => {
+        navigate(`/groups/${params.groupId}/subjects/create`);
+    }
+
+    const navigateToSubject = (id) => {
+        navigate(`/groups/${params.groupId}/subjects/${id}`);
+    }
+
+    const parseLessonType = (lessonType) => {
+        switch(lessonType) {
+            case 0:
+                return {variant: "", text: "NONE"};
+            case 1:
+                return {variant: "danger", text: "LECTURE"};
+            case 2:
+                return {variant: "success", text: "PRACTICE"};
+        }
     }
 
     if (error) {
@@ -39,7 +54,7 @@ const LinksPage = () => {
                     width={"50%"}
                     style={{ margin: "10px" }}
                 />
-                <p>Something went wrong, while fetching links</p>
+                <p>Something went wrong, while fetching subjects</p>
             </div>
         )
     }
@@ -53,7 +68,7 @@ const LinksPage = () => {
         )
     }
 
-    if (links.length === 0) {
+    if (subjects.length === 0) {
         return (
             <div className="center">
                 <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
@@ -63,11 +78,11 @@ const LinksPage = () => {
                     width={"50%"}
                     style={{ margin: "10px" }}
                 />
-                <p>There aren`t any links in this group yet</p>
+                <p>There aren`t any subjects in this group yet</p>
                 <button
-                    onClick={navigateToCreateLink}
+                    onClick={navigateToCreateSubject}
                     style={{ width: "80%" }}>
-                    Create link
+                    Create subject
                 </button>
             </div>
         )
@@ -77,20 +92,28 @@ const LinksPage = () => {
         <div className="center">
             <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
             {
-                links.map((link, index) => 
-                    <div className="card" key={index}>
-                        <div className="card-text-block">
-                            <h2 className="card-text">{link.name}</h2>
-                            <p className="card-text">{link.url}</p>
-                        </div>
-                    </div>)
+                subjects.map((subject, index) => 
+                <div className="card" key={index} 
+                    onClick={() => navigateToSubject(subject.id)}>
+                    
+                    <div 
+                        className="card-text-block" 
+                        style={{width: "100%", paddingLeft: "10px"}}>
+                        <h3 className="card-text">{subject.name}</h3>
+                        <p className="card-text">{subject.teacherName}</p>
+                    </div>
+                    <div className={`tag ${parseLessonType(subject.lessonType).variant}`}
+                        style={{marginRight: "10px"}}>
+                        {parseLessonType(subject.lessonType).text}
+                    </div>
+                </div>)
             }
 
             <MainButton
-                text="Create link"
-                onClick={navigateToCreateLink} />
+                text="Create subject"
+                onClick={navigateToCreateSubject} />
         </div>
     )
 }
 
-export default LinksPage;
+export default SubjectsPage;

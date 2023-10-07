@@ -31,3 +31,30 @@ span.text-input-label {
     -webkit-transition: 0.3s;
     transition: 0.3s;
 }
+
+div.radio-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+input[type=radio] {
+    appearance: none;
+    display: block;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid var(--secondary-bg-color);
+    transition: 0.2s all linear;
+    outline: none;
+    margin-right: 5px;
+
+    position: relative;
+    top: 4px;
+}
+
+input[type=radio]:checked {
+    border-color: var(--primary-color);
+    border-width: 4px;
+}

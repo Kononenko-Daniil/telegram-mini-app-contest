@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -27,6 +28,21 @@ namespace server_side.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Hometasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    SubjectId = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "longtext", nullable: false),
+                    Deadline = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hometasks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Links",
                 columns: table => new
                 {
@@ -39,6 +55,22 @@ namespace server_side.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Links", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subjects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    LessonType = table.Column<int>(type: "int", nullable: false),
+                    TeacherName = table.Column<string>(type: "longtext", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subjects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,7 +94,13 @@ namespace server_side.Migrations
                 name: "Groups");
 
             migrationBuilder.DropTable(
+                name: "Hometasks");
+
+            migrationBuilder.DropTable(
                 name: "Links");
+
+            migrationBuilder.DropTable(
+                name: "Subjects");
 
             migrationBuilder.DropTable(
                 name: "UserGroupRelations");

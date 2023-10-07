@@ -75,7 +75,7 @@ const HomePage = () => {
     }
 
     return (
-        <div>
+        <div className="center">
             {
                 groups.map((group, index) =>
                     <div className="card" key={index} onClick={() => navigateToGroup(group.id)}>
