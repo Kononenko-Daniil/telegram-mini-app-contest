@@ -4,22 +4,19 @@ using server_side.Middlewares.UseTelegramUser;
 using server_side.Models;
 using server_side.Services;
 using server_side.Telegram.UserServices;
+using server_side.Types.Enums;
 
 namespace server_side.Controllers
 {
     [ApiController]
     [Route("groups/{groupId:int}/links")]
-    public class LinkContoller : ControllerBase
-    {
+    public class LinkContoller : ControllerBase {
         private readonly IUserService _userService;
         private readonly ILinkService _linkService;
-        private readonly IGroupService _groupService;
 
-        public LinkContoller(IUserService userService, ILinkService linkService, IGroupService groupService)
-        {
+        public LinkContoller(IUserService userService, ILinkService linkService) {
             _linkService = linkService;
             _userService = userService;
-            _groupService = groupService;
         }
 
         [HttpGet("")]
@@ -31,7 +28,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId)) {
                 return Unauthorized();
             }
 
@@ -49,7 +46,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId, UserGroupRelationType.VIEWER)) {
                 return Unauthorized();
             }
 
@@ -67,7 +64,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId, UserGroupRelationType.VIEWER)) {
                 return Unauthorized();
             }
 

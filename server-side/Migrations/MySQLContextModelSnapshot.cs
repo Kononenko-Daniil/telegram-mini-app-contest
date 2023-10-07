@@ -120,6 +120,10 @@ namespace server_side.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Nickname")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 

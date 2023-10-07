@@ -4,6 +4,7 @@ using server_side.Middlewares.UseTelegramUser;
 using server_side.Models;
 using server_side.Services;
 using server_side.Telegram.UserServices;
+using server_side.Types.Enums;
 
 namespace server_side.Controllers
 {
@@ -36,7 +37,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId)) {
                 return Unauthorized();
             }
 
@@ -54,7 +55,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, id, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId)) {
                 return Unauthorized();
             }
 
@@ -72,7 +73,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId, UserGroupRelationType.VIEWER)) {
                 return Unauthorized();
             }
 
@@ -81,7 +82,7 @@ namespace server_side.Controllers
             return Ok(subjectId);
         }
 
-        [HttpPost("{id:int}/create-hometask")]
+        [HttpPost("{id:int}/hometasks/create")]
         [UseTelegramUser]
         public async Task<ActionResult<int>> CreateHometask(int id, int groupId, [FromBody] CreateHometaskInput input) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -90,7 +91,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId, UserGroupRelationType.VIEWER)) {
                 return Unauthorized();
             }
 
@@ -108,7 +109,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId)) {
                 return Unauthorized();
             }
 
@@ -126,7 +127,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, groupId, UserGroupRelationType.VIEWER)) {
                 return Unauthorized();
             }
 

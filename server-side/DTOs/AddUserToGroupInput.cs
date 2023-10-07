@@ -4,5 +4,6 @@
     {
         public int GroupId { get; set; }
         public string AccessCode { get; set; }
+        public string Nickname { get; set; }
     }
 }

@@ -78,8 +78,9 @@ const LinksPage = () => {
             <BackButton onClick={() => navigate(`/groups/${params.groupId}`)} />
             {
                 links.map((link, index) => 
-                    <div className="card" key={index}>
-                        <div className="card-text-block">
+                    <div className="card" key={index} 
+                        onClick={() => WebApp.openLink(link.url)}>
+                        <div className="card-text-block" style={{marginLeft: "10px"}}>
                             <h2 className="card-text">{link.name}</h2>
                             <p className="card-text">{link.url}</p>
                         </div>

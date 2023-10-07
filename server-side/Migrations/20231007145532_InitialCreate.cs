@@ -79,6 +79,7 @@ namespace server_side.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false),
+                    Nickname = table.Column<string>(type: "longtext", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

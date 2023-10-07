@@ -13,6 +13,7 @@ const CreateGroupPage = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [accessCode, setAccessCode] = useState("");
+    const [ownerNickname, setOwnerNickname] = useState("");
 
     const [isLoaded, setIsLoaded] = useState(true);
     const [error, setError] = useState(null);
@@ -21,14 +22,15 @@ const CreateGroupPage = () => {
         const groupInput = {
             name,
             description,
-            accessCode
+            accessCode,
+            ownerNickname
         };
-        
+
         setIsLoaded(false);
         await API.groups.create(groupInput, WebApp.initData)
             .then((result) => {
                 setIsLoaded(true);
-                
+
                 navigate("/");
             }, (error) => {
                 setIsLoaded(true);
@@ -42,7 +44,7 @@ const CreateGroupPage = () => {
         <div className="center">
             <BackButton onClick={() => navigate("/")} />
             <Lottie
-                options={animationOptions(isLoaded ? animation.create_animation : 
+                options={animationOptions(isLoaded ? animation.create_animation :
                     animation.loading_animation)}
                 height={"20%"}
                 width={"20%"}
@@ -65,10 +67,17 @@ const CreateGroupPage = () => {
 
             <TextInput
                 style={{ margin: "5px 5px" }}
+                value={ownerNickname}
+                onChange={(e) => setOwnerNickname(e.target.value)}
+                labelText="Your nickname"
+                disabled={!isLoaded} />
+
+            <TextInput
+                style={{ margin: "5px 5px" }}
                 value={accessCode}
                 onChange={(e) => setAccessCode(e.target.value)}
                 labelText="Access code"
-                disabled={!isLoaded} />
+                disabled={!isLoaded} /> 
 
             <MainButton
                 text="Create group"

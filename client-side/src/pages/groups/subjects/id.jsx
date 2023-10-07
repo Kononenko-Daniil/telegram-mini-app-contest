@@ -105,8 +105,9 @@ const SubjectByIdPage = () => {
                         <div
                             className="card-text-block"
                             style={{ width: "100%", paddingLeft: "10px" }}>
-                            <div className={`tag ${Date.now() < hometask.deadline ? "success" : "danger"}`}>
-                                {hometask.deadline}
+                            <div className={`tag ${Date.now() < new Date(hometask.deadline) ? 
+                                "success" : "danger"}`} style={{margin: "5px 0px 0px 0px"}}>
+                                {new Date(hometask.deadline).toLocaleString()}
                             </div>
                             <h3 className="card-text">{hometask.content}</h3>
                         </div>

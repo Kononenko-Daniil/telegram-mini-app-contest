@@ -49,7 +49,8 @@ namespace server_side.Services
                     UserGroupRelation userRelation = new UserGroupRelation() {
                         UserId = ownerId,
                         GroupId = group.Id,
-                        Type = UserGroupRelationType.OWNER
+                        Type = UserGroupRelationType.OWNER,
+                        Nickname = input.OwnerNickname
                     };
                     await _dbContext.UserGroupRelations.AddAsync(userRelation);
                     await _dbContext.SaveChangesAsync();
@@ -113,15 +114,15 @@ namespace server_side.Services
             return groups;
         }
 
-        public bool TryGetUserGroupRelation(int userId, int groupId, out UserGroupRelation? relation) {
-            relation = _dbContext.UserGroupRelations
-                .FirstOrDefault(ugr => ugr.UserId == userId && ugr.GroupId == groupId);
+        public async Task<UserGroupRelation?> GetUserGroupRelation(int userId, int groupId) {
+            var relation = await _dbContext.UserGroupRelations
+                .FirstOrDefaultAsync(ugr => ugr.UserId == userId && ugr.GroupId == groupId);
 
             if (relation is null) {
-                return false;
+                throw new Exception();
             }
 
-            return true;
+            return relation;
         }
     }
 }

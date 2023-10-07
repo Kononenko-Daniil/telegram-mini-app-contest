@@ -7,6 +7,9 @@ import CreateLinkPage from './pages/groups/links/create';
 import CreateSubjectPage from './pages/groups/subjects/create';
 import SubjectsPage from './pages/groups/subjects';
 import SubjectByIdPage from './pages/groups/subjects/id';
+import CreateHometaskPage from './pages/groups/hometasks/create';
+import HometaskByIdPage from './pages/groups/hometasks/id';
+import HometasksPage from './pages/groups/hometasks';
 
 function App() {
     return (
@@ -21,10 +24,13 @@ function App() {
                     <Route path="/groups/:groupId/links" element={<LinksPage />} />
                     <Route path="/groups/:groupId/links/create" element={<CreateLinkPage />} />
 
+                    <Route path="/groups/:groupId/hometasks" element={<HometasksPage />} />
+                    <Route path="/groups/:groupId/hometasks/:id" element={<HometaskByIdPage />} />
+
                     <Route path="/groups/:groupId/subjects" element={<SubjectsPage />} />
                     <Route path="/groups/:groupId/subjects/:id" element={<SubjectByIdPage />} />
                     <Route path="/groups/:groupId/subjects/create" element={<CreateSubjectPage />} />
-                    <Route path="/groups/:groupId/subjects/:id/hometasks/create" element={<CreateSubjectPage />} />
+                    <Route path="/groups/:groupId/subjects/:id/hometasks/create" element={<CreateHometaskPage />} />
                 </Routes>
             </Router>
         </div>

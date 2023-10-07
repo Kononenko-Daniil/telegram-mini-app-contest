@@ -67,6 +67,12 @@ const HomePage = () => {
                 <p>You are not a member of any groups</p>
                 <button
                     onClick={navigateToCreateGroup}
+                    style={{ width: "80%", marginBottom: "10px" }}>
+                    Join existing group
+                </button>
+                <button
+                    className="primary-tinned"
+                    onClick={navigateToCreateGroup}
                     style={{ width: "80%" }}>
                     Create group
                 </button>
@@ -76,6 +82,11 @@ const HomePage = () => {
 
     return (
         <div className="center">
+            <button
+                onClick={navigateToCreateGroup}
+                style={{ width: "80%", marginBottom: "10px" }}>
+                Join existing group
+            </button>
             {
                 groups.map((group, index) =>
                     <div className="card" key={index} onClick={() => navigateToGroup(group.id)}>

@@ -11,7 +11,7 @@ using server_side.Database;
 namespace server_side.Migrations
 {
     [DbContext(typeof(MySQLContext))]
-    [Migration("20231007093506_InitialCreate")]
+    [Migration("20231007145532_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -122,6 +122,10 @@ namespace server_side.Migrations
 
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nickname")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

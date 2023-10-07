@@ -4,6 +4,7 @@ using server_side.Middlewares.UseTelegramUser;
 using server_side.Models;
 using server_side.Services;
 using server_side.Telegram.UserServices;
+using server_side.Types.Enums;
 using System.ComponentModel;
 
 namespace server_side.Controllers
@@ -48,7 +49,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if(!_groupService.TryGetUserGroupRelation(user.Id, id, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, id)) {
                 return Unauthorized();
             }
 
@@ -87,7 +88,7 @@ namespace server_side.Controllers
             return Ok();
         }
 
-        [HttpPost("{id:int}/hometasks")]
+        [HttpGet("{id:int}/hometasks")]
         [UseTelegramUser]
         public async Task<ActionResult<IEnumerable<Hometask>>> GetGroupHometasks(int id) {
             TelegramUser? user = _userService.Get(HttpContext);
@@ -96,7 +97,7 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, id, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, id)) {
                 return Unauthorized();
             }
 
@@ -105,22 +106,40 @@ namespace server_side.Controllers
             return Ok(hometasks);
         }
 
-        [HttpPost("{id:int}/hometasks/{hometaskId:int}")]
+        [HttpGet("{id:int}/hometasks/{hometaskId:int}")]
         [UseTelegramUser]
-        public async Task<ActionResult<Hometask>> GetGroupHometasks(int id, int hometaskId) {
+        public async Task<ActionResult<Hometask>> GetHometaskById(int id, int hometaskId) {
             TelegramUser? user = _userService.Get(HttpContext);
 
             if (user is null) {
                 return Unauthorized();
             }
 
-            if (!_groupService.TryGetUserGroupRelation(user.Id, id, out UserGroupRelation? relation)) {
+            if (!await _userService.IsAuthorized(user.Id, id)) {
                 return Unauthorized();
             }
 
             var hometask = await _hometaskService.GetById(hometaskId);
 
             return Ok(hometask);
+        }
+
+        [HttpPost("{id:int}/hometasks/{hometaskId:int}/delete")]
+        [UseTelegramUser]
+        public async Task<ActionResult<bool>> DeleteHometask(int id, int groupId) {
+            TelegramUser? user = _userService.Get(HttpContext);
+
+            if (user is null) {
+                return Unauthorized();
+            }
+
+            if (!await _userService.IsAuthorized(user.Id, id, UserGroupRelationType.VIEWER)) {
+                return Unauthorized();
+            }
+
+            var isDeleted = await _hometaskService.Delete(id);
+
+            return Ok(isDeleted);
         }
     }
 }

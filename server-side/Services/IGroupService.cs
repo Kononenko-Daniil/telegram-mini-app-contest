@@ -7,9 +7,7 @@ namespace server_side.Services
     {
         public Task<IEnumerable<Group>> GetUserGroups(int userId);
         public Task<Group> GetById(int id);
-        public bool TryGetUserGroupRelation(int userId,
-            int groupId,
-            out UserGroupRelation? relation);
+        public Task<UserGroupRelation?> GetUserGroupRelation(int userId, int groupId);
 
         public Task<bool> AddUserToGroup(AddUserToGroupInput input, int userId);
         public Task<int> Create(CreateGroupInput input, int ownerId);

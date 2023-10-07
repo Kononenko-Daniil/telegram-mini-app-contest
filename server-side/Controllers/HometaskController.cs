@@ -24,23 +24,5 @@ namespace server_side.Controllers
             _subjectService = subjectService;
             _hometaskService = hometaskService;
         }
-
-        [HttpPost("{id:int}/delete")]
-        [UseTelegramUser]
-        public async Task<ActionResult<bool>> DeleteHometask(int id, int groupId) {
-            TelegramUser? user = _userService.Get(HttpContext);
-
-            if (user is null) {
-                return Unauthorized();
-            }
-
-            if (!_groupService.TryGetUserGroupRelation(user.Id, groupId, out UserGroupRelation? relation)) {
-                return Unauthorized();
-            }
-
-            var isDeleted = await _hometaskService.Delete(id);
-
-            return Ok(isDeleted);
-        }
     }
 }
