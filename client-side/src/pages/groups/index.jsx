@@ -14,23 +14,21 @@ const GroupsPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        API.groups.getMy(WebApp.initData)
+        const initData = WebApp.initData;
+
+        API.groups.getMy(initData)
             .then((result) => {
-                setIsLoaded(true);
                 setGroups(result);
-            }, (error) => {
                 setIsLoaded(true);
+            }, (error) => {
                 setError(error);
+                setIsLoaded(true);
             });
     }, []);
 
-    const navigateToGroupById = (id) => {
-        navigate(`/groups/${id}`);
-    }
-
-    const navigateToGroupCreate = () => {
-        navigate("/groups/create");
-    }
+    const navigateToGroupById = (id) => navigate(`/groups/${id}`);
+    const navigateToGroupCreate = () => navigate("/groups/create");
+    const navigateToGroupJoin = () => navigate("/groups/join");
 
     if (error) {
         return (
@@ -63,12 +61,15 @@ const GroupsPage = () => {
                     width={"50%"}
                     style={{ margin: "10px" }}
                 />
+
                 <p>You are not a member of any group</p>
+
                 <button
-                    onClick={navigateToGroupCreate}
+                    onClick={navigateToGroupJoin}
                     style={{ width: "80%", marginBottom: "10px" }}>
                     Join existing group
                 </button>
+
                 <button
                     className="primary-tinned"
                     onClick={navigateToGroupCreate}
@@ -82,14 +83,15 @@ const GroupsPage = () => {
     return (
         <div className="center">
             <button
-                onClick={navigateToGroupCreate}
+                onClick={navigateToGroupJoin}
                 style={{ width: "80%", marginBottom: "10px" }}>
                 Join existing group
             </button>
 
             {
                 groups.map((group, index) =>
-                    <div className="card" key={index} onClick={() => navigateToGroupById(group.id)}>
+                    <div className="card" key={index} 
+                        onClick={() => navigateToGroupById(group.id)}>
                         <div className="avatar md" style={{ marginRight: "10px" }}>
                             <h3 className="avatar-text">{group.name.slice(0, 2)}</h3>
                         </div>

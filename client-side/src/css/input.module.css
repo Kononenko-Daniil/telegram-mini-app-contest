@@ -58,3 +58,42 @@ input[type=radio]:checked {
     border-color: var(--primary-color);
     border-width: 4px;
 }
+
+textarea {
+    width: 80%;
+    border-color: var(--secondary-bg-color);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 15px;
+    background-color: var(--bg-color);
+
+    transition: border-color 0.3s;
+    
+    outline: none;
+}
+
+textarea:disabled {
+    color: var(--hint-color);
+}
+
+textarea:focus {
+    border-color: var(--primary-color);
+}
+
+input[type="datetime-local"] {
+    width: 300px;
+    height: 20px;
+    border-color: var(--secondary-bg-color);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 15px;
+    background-color: var(--bg-color);
+
+    transition: border-color 0.3s;
+    
+    outline: none;
+}

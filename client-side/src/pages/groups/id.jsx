@@ -11,28 +11,60 @@ const GroupByIdPage = () => {
     const navigate = useNavigate();
     const params = useParams();
 
+    const [userGroupInfo, setUserGroupInfo] = useState(null);
     const [group, setGroup] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        API.groups.getById(params.id, WebApp.initData)
-            .then((result) => {
+        const groupId = params.id;
+        const initData = WebApp.initData;
+
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
+        const groupByIdRequest = API.groups.getById(params.id, WebApp.initData);
+
+        Promise.all([userGroupInfoRequest, groupByIdRequest])
+            .then(([userGroupInfoResponse, groupResponse]) => {
+                setUserGroupInfo(userGroupInfoResponse);
+                setGroup(groupResponse);
                 setIsLoaded(true);
-                setGroup(result);
-            }, (error) => {
-                setIsLoaded(true);
+            })
+            .catch((error) => {
                 setError(error);
+                setIsLoaded(true);
             });
     }, []);
 
-    const navigateHome = () => {
-        navigate("/");
+    const handleDeleteGroupClick = async () => {
+        const groupId = params.id;
+        const initData = WebApp.initData
+
+        setIsLoaded(false);
+        await API.groups.remove(groupId, initData)
+            .then((result) => {
+                navigateHome();
+            }, (error) => {
+                setIsLoaded(true);
+                WebApp.showAlert("Something went wrong while deleting group");
+            });
     }
 
-    const navigateToTabPage = (tabName) => {
-        navigate(`/groups/${group.id}/${tabName}`)
+    const handleExcludeMeClick = async () => {
+        const groupId = params.id;
+        const initData = WebApp.initData;
+
+        setIsLoaded(false);
+        await API.groups.excludeMe(groupId, initData)
+            .then((result) => {
+                navigateHome();
+            }, (error) => {
+                setIsLoaded(true);
+                WebApp.showAlert("Something went wrong while escluding you from this group");
+            });
     }
+
+    const navigateHome = () => navigate("/");
+    const navigateToTabPage = (tabName) => navigate(`/groups/${group.id}/${tabName}`)
 
     if (!isLoaded) {
         return (
@@ -81,13 +113,13 @@ const GroupByIdPage = () => {
 
             <TabCard
                 name={"Hometasks"}
-                description={"View your hometasks"}
+                description={"View group hometasks"}
                 logoText={"👨‍🏫"}
                 onClick={() => navigateToTabPage("hometasks")} />
 
             <TabCard
                 name={"Subjects"}
-                description={"View your subjects"}
+                description={"View group subjects"}
                 logoText={"📒"}
                 onClick={() => navigateToTabPage("subjects")} />
 
@@ -96,6 +128,34 @@ const GroupByIdPage = () => {
                 description={"Useful links"}
                 logoText={"📌"}
                 onClick={() => navigateToTabPage("links")} />
+
+            {
+                userGroupInfo.isOwner ?
+                    <TabCard
+                        name={"Participants"}
+                        description={"View and edit group participants"}
+                        logoText={"👦"}
+                        onClick={() => navigateToTabPage("participants")} /> : <></>
+            }
+
+            <button
+                onClick={handleExcludeMeClick}
+                className='danger-tinned'
+                style={{ width: "90%", margin: "10px 0px" }}>
+                Exclude me
+            </button>
+
+            {
+                userGroupInfo.isOwner ?
+                    <button
+                        onClick={handleDeleteGroupClick}
+                        className='danger'
+                        style={{ width: "90%", marginBottom: "10px" }}>
+                        Delete group
+                    </button> : <></>
+            }
+
+
         </div>
     )
 }

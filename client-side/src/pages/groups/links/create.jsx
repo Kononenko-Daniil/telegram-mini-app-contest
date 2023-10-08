@@ -16,21 +16,18 @@ const CreateLinkPage = () => {
     const [isLoaded, setIsLoaded] = useState(true);
     const [error, setError] = useState(null);
 
-    const navigateToLinks = () => {
-        navigate(`/groups/${params.groupId}/links`);
-    }
-
     const handleCreateLinkClick = async () => {
+        const groupId = params.groupId;
+        const initData = WebApp.initData;
         const linkInput = {
             name,
             url
         };
 
         setIsLoaded(false);
-        await API.links.create(linkInput, params.groupId, WebApp.initData)
+        await API.links.create(linkInput, groupId, initData)
             .then((result) => {
                 setIsLoaded(true);
-
                 navigateToLinks();
             }, (error) => {
                 setIsLoaded(true);
@@ -39,6 +36,8 @@ const CreateLinkPage = () => {
                 WebApp.showAlert(`${error.message}`);
             });
     }
+
+    const navigateToLinks = () => navigate(`/groups/${params.groupId}/links`);
 
     return (
         <div className="center">

@@ -57,10 +57,10 @@ namespace server_side.Controllers
             return Ok(linkId);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("{id:int}/delete")]
         [UseTelegramUser]
-        public async Task<ActionResult<bool>> DeleteLink(int groupId, int id) {
+        public async Task<ActionResult> DeleteLink(int groupId, int id) {
             TelegramUser? user = _userService.Get(HttpContext);
 
             if (user is null) {
@@ -71,9 +71,9 @@ namespace server_side.Controllers
                 return Unauthorized();
             }
 
-            var isDeleted = await _linkService.Delete(id);
+            await _linkService.Delete(id);
 
-            return Ok(isDeleted);
+            return Ok();
         }
     }
 }

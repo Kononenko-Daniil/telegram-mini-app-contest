@@ -9,6 +9,6 @@ namespace server_side.Services
         public Task<IEnumerable<Hometask>> GetBySubject(int subjectId);
         public Task<Hometask> GetById(int id);
         public Task<int> Create(CreateHometaskInput input, int subjectId);
-        public Task<bool> Delete(int id);
+        public Task Delete(int id);
     }
 }

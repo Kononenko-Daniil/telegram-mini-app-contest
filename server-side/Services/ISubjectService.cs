@@ -8,6 +8,6 @@ namespace server_side.Services
         public Task<IEnumerable<Subject>> GetByGroup(int groupId);
         public Task<Subject> GetById(int id);
         public Task<int> Create(CreateSubjectInput input, int groupId);
-        public Task<bool> Delete(int id);
+        public Task Delete(int id);
     }
 }

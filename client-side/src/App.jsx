@@ -10,6 +10,8 @@ import CreateHometaskPage from './pages/groups/hometasks/create';
 import HometaskByIdPage from './pages/groups/hometasks/id';
 import HometasksPage from './pages/groups/hometasks';
 import GroupsPage from './pages/groups';
+import JoinGroupPage from './pages/groups/join';
+import ParticipantsPage from './pages/groups/participants';
 
 function App() {
     return (
@@ -19,7 +21,10 @@ function App() {
                     <Route path="/" element={<GroupsPage />} />
                     <Route path="/groups" element={<GroupsPage />} />
                     <Route path="/groups/create" element={<CreateGroupPage />} />
+                    <Route path="/groups/join" element={<JoinGroupPage />} />
                     <Route path="/groups/:id" element={<GroupByIdPage />} />
+
+                    <Route path="/groups/:groupId/participants" element={<ParticipantsPage />} />
 
                     <Route path="/groups/:groupId/links" element={<LinksPage />} />
                     <Route path="/groups/:groupId/links/create" element={<CreateLinkPage />} />

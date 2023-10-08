@@ -18,7 +18,7 @@ namespace server_side.Services
             _dbContext = dbContext;
         }
 
-        public async Task<bool> AddUserToGroup(AddUserToGroupInput input, int userId) {
+        public async Task AddUserToGroup(AddUserToGroupInput input, int userId) {
             Group? group = await _dbContext.Groups.FirstOrDefaultAsync(g => g.Id == input.GroupId);
             if (group == null) {
                 throw new NotFoundException();
@@ -31,13 +31,12 @@ namespace server_side.Services
             UserGroupRelation relation = new UserGroupRelation {
                 GroupId = input.GroupId,
                 UserId = userId,
+                Nickname = input.Nickname,
                 Type = UserGroupRelationType.VIEWER
             };
 
             await _dbContext.UserGroupRelations.AddAsync(relation);
             await _dbContext.SaveChangesAsync();
-
-            return true;
         }
 
         public async Task<int> Create(CreateGroupInput input, int ownerId) {
@@ -66,7 +65,7 @@ namespace server_side.Services
             }
         }
 
-        public async Task<bool> Delete(int id) {
+        public async Task Delete(int id) {
             Group? group = await _dbContext.Groups.FirstOrDefaultAsync(g => g.Id == id);
             if (group == null) {
                 throw new Exception();
@@ -75,6 +74,7 @@ namespace server_side.Services
             var userRelations = await _dbContext.UserGroupRelations
                 .Where(ugr => ugr.GroupId == id)
                 .ToListAsync();
+            var links = await _dbContext.Links.Where(l => l.GroupId == id).ToListAsync();
             var subjects = await _dbContext.Subjects
                 .Where(s => s.GroupId == id)
                 .ToListAsync();
@@ -86,12 +86,11 @@ namespace server_side.Services
                 .ToListAsync();
 
             _dbContext.Remove(group);
-            _dbContext.Remove(userRelations);
+            _dbContext.RemoveRange(userRelations);
             _dbContext.RemoveRange(subjects);
+            _dbContext.RemoveRange(links);
             _dbContext.RemoveRange(hometasks);
             await _dbContext.SaveChangesAsync();
-
-            return true;
         }
 
         public async Task<Group> GetById(int id) {
@@ -124,6 +123,42 @@ namespace server_side.Services
             }
 
             return relation;
+        }
+
+        public UserGroupInfo GetUserGroupInfo(UserGroupRelation userRelation) {
+            var userInfo = _mapper.Map<UserGroupInfo>(userRelation);
+
+            return userInfo;
+        }
+
+        public async Task ExcludeUser(int userId, int groupId) {
+            UserGroupRelation? relation = await _dbContext.UserGroupRelations
+                .FirstOrDefaultAsync(ugr => ugr.GroupId == groupId && ugr.UserId == userId);
+
+            if (relation is null) {
+                throw new NotFoundException();
+            }
+
+            _dbContext.UserGroupRelations.Remove(relation);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<UserGroupInfo>> GetParticipants(int groupId) {
+            var participants = await _dbContext.UserGroupRelations
+                .Where(ugr => ugr.GroupId == groupId)
+                .Select(ugr => _mapper.Map<UserGroupInfo>(ugr))
+                .ToListAsync();
+
+            return participants;
+        }
+
+        public async Task UpdateUserGroupRelation(UserGroupRelation input) {
+            var relation = await GetUserGroupRelation(input.UserId, input.GroupId);
+            relation.Nickname = input.Nickname;
+            relation.Type = input.Type;
+
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

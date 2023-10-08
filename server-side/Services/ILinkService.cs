@@ -7,6 +7,6 @@ namespace server_side.Services
     {
         public Task<IEnumerable<Link>> GetByGroup(int groupId);
         public Task<int> Create(CreateLinkInput input, int groupId);
-        public Task<bool> Delete(int id);
+        public Task Delete(int id);
     }
 }

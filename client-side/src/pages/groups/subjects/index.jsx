@@ -5,48 +5,39 @@ import WebApp from "@twa-dev/sdk";
 import { MainButton, BackButton } from '@twa-dev/sdk/react';
 import Lottie from "react-lottie";
 import { animation, animationOptions } from "../../../Animations";
+import LessonTypeTag from "../../../components/LessonTypeTag";
 
 const SubjectsPage = () => {
     const params = useParams();
     const navigate = useNavigate();
 
+    const [userGroupInfo, setUserGroupInfo] = useState(null);
     const [subjects, setSubjects] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        API.subjects.getByGroup(params.groupId, WebApp.initData)
-            .then((result) => {
-                setSubjects(result);
-                setIsLoaded(true);
-            }, (error) => {
-                setError(error);
+        const groupId = params.groupId;
+        const initData = WebApp.initData;
+
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
+        const subjectsRequest = API.subjects.getByGroup(params.groupId, WebApp.initData);
+
+        Promise.all([userGroupInfoRequest, subjectsRequest])
+            .then(([userGroupInfoResponse, subjectsResponse]) => {
+                setUserGroupInfo(userGroupInfoResponse);
+                setSubjects(subjectsResponse);
                 setIsLoaded(true);
             })
+            .catch((error) => {
+                setError(error);
+                setIsLoaded(true);
+            });
     }, []);
 
-    const navigateToGroupById = () => {
-        navigate(`/groups/${params.groupId}`);
-    }
-
-    const navigateToSubjectCreate = () => {
-        navigate(`/groups/${params.groupId}/subjects/create`);
-    }
-
-    const navigateToSubjectById = (id) => {
-        navigate(`/groups/${params.groupId}/subjects/${id}`);
-    }
-
-    const parseLessonType = (lessonType) => {
-        switch(lessonType) {
-            case 0:
-                return {variant: "", text: "NONE"};
-            case 1:
-                return {variant: "danger", text: "LECTURE"};
-            case 2:
-                return {variant: "success", text: "PRACTICE"};
-        }
-    }
+    const navigateToGroupById = () => navigate(`/groups/${params.groupId}`);
+    const navigateToSubjectCreate = () => navigate(`/groups/${params.groupId}/subjects/create`);
+    const navigateToSubjectById = (id) => navigate(`/groups/${params.groupId}/subjects/${id}`);
 
     if (error) {
         return (
@@ -84,12 +75,15 @@ const SubjectsPage = () => {
                     style={{ margin: "10px" }}
                 />
                 <p>There aren`t any subjects in this group yet</p>
-                
-                <button
-                    onClick={navigateToSubjectCreate}
-                    style={{ width: "80%" }}>
-                    Create subject
-                </button>
+
+                {
+                    userGroupInfo.canEdit ?
+                        <button
+                            onClick={navigateToSubjectCreate}
+                            style={{ width: "80%" }}>
+                            Create subject
+                        </button> : <></>
+                }
             </div>
         )
     }
@@ -98,29 +92,30 @@ const SubjectsPage = () => {
         <div className="center">
             <BackButton onClick={navigateToGroupById} />
             {
-                subjects.map((subject, index) => 
-                <div 
-                    className="card" 
-                    key={index} 
-                    onClick={() => navigateToSubjectById(subject.id)}>
-                    <div 
-                        className="card-text-block" 
-                        style={{width: "100%", paddingLeft: "10px"}}>
-                        <h3 className="card-text">{subject.name}</h3>
-                        <p className="card-text">{subject.teacherName}</p>
-                    </div>
+                subjects.map((subject, index) =>
+                    <div
+                        className="card"
+                        key={index}
+                        onClick={() => navigateToSubjectById(subject.id)}>
+                        <div
+                            className="card-text-block"
+                            style={{ width: "100%", paddingLeft: "10px" }}>
+                            <h3 className="card-text">{subject.name}</h3>
+                            <p className="card-text">{subject.teacherName}</p>
+                        </div>
 
-                    <div 
-                        className={`tag ${parseLessonType(subject.lessonType).variant}`}
-                        style={{marginRight: "10px"}}>
-                        {parseLessonType(subject.lessonType).text}
-                    </div>
-                </div>)
+                        <LessonTypeTag
+                            lessonType={subject.lessonType}
+                            style={{ marginRight: "10px" }} />
+                    </div>)
             }
 
-            <MainButton
-                text="Create subject"
-                onClick={navigateToSubjectCreate} />
+            {
+                userGroupInfo.canEdit ?
+                    <MainButton
+                        text="Create subject"
+                        onClick={navigateToSubjectCreate} /> : <></>
+            }
         </div>
     )
 }

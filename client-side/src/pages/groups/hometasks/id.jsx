@@ -24,15 +24,12 @@ const HometaskByIdPage = () => {
                 setHometask(result);
                 setIsLoaded(true);
             }, (error) => {
-                setIsLoaded(true);
                 setError(error);
+                setIsLoaded(true);
             });
-
     }, []);
 
-    const navigateBack = () => {
-        navigate(-1);
-    }
+    const navigateBack = () => navigate(-1);
 
     if (!isLoaded) {
         return (

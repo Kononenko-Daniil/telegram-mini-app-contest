@@ -27,7 +27,7 @@ namespace server_side.Services
             return hometask.Id;
         }
 
-        public async Task<bool> Delete(int id) {
+        public async Task Delete(int id) {
             Hometask? hometask = await _dbContext.Hometasks
                 .FirstOrDefaultAsync(h => h.Id == id);
             if (hometask == null) {
@@ -36,8 +36,6 @@ namespace server_side.Services
 
             _dbContext.Hometasks.Remove(hometask);
             await _dbContext.SaveChangesAsync();
-
-            return true;
         }
 
         public async Task<IEnumerable<Hometask>> GetByGroup(int groupId) {

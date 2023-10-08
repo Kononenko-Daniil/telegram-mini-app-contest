@@ -27,7 +27,7 @@ namespace server_side.Services
             return link.Id;
         }
 
-        public async Task<bool> Delete(int id) {
+        public async Task Delete(int id) {
             Link? link = await _dbContext.Links.FirstOrDefaultAsync(l => l.Id == id);
 
             if (link == null) {
@@ -36,8 +36,6 @@ namespace server_side.Services
 
             _dbContext.Links.Remove(link);
             await _dbContext.SaveChangesAsync();
-
-            return true;
         }
 
         public async Task<IEnumerable<Link>> GetByGroup(int groupId) {

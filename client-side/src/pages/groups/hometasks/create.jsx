@@ -15,29 +15,29 @@ const CreateHometaskPage = () => {
     const [isLoaded, setIsLoaded] = useState(true);
     const [error, setError] = useState(null);
 
-    const navigateToSubjectById = () => {
-        navigate(`/groups/${params.groupId}/subjects/${params.id}`);
-    }
-
     const handleCreateHometaskClick = async () => {
+        const groupId = params.groupId;
+        const subjectId = params.id;
+        const initData = WebApp.initData;
         const hometaskInput = {
             content,
-            deadline: new Date(deadline).toISOString()
+            deadline: new Date(deadline)
         };
         
         setIsLoaded(false);
-        await API.hometasks.create(hometaskInput, params.groupId, params.id, WebApp.initData)
+        await API.hometasks.create(hometaskInput, groupId, subjectId, initData)
             .then((result) => {
                 setIsLoaded(true);
-                
                 navigateToSubjectById();
             }, (error) => {
-                setIsLoaded(true);
                 setError(error);
+                setIsLoaded(true);
 
                 WebApp.showAlert(`${error.message}`);
             });
     }
+
+    const navigateToSubjectById = () => navigate(`/groups/${params.groupId}/subjects/${params.id}`);
 
     return (
         <div className="center">
@@ -51,7 +51,6 @@ const CreateHometaskPage = () => {
             />
 
             <h1>New hometask</h1>
-
             <input 
                 type="datetime-local" 
                 value={deadline} 

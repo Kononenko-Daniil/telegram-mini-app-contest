@@ -27,7 +27,7 @@ namespace server_side.Services
             return subject.Id;
         }
 
-        public async Task<bool> Delete(int id) {
+        public async Task Delete(int id) {
             Subject? subject = await _dbContext.Subjects.FirstOrDefaultAsync(s => s.Id == id);
             if (subject == null) {
                 throw new Exception();
@@ -40,8 +40,6 @@ namespace server_side.Services
             _dbContext.Subjects.Remove(subject);
             _dbContext.RemoveRange(subjectHometasks);
             await _dbContext.SaveChangesAsync();
-
-            return true;
         }
 
         public async Task<IEnumerable<Subject>> GetByGroup(int groupId) {

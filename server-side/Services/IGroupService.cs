@@ -8,9 +8,13 @@ namespace server_side.Services
         public Task<IEnumerable<Group>> GetUserGroups(int userId);
         public Task<Group> GetById(int id);
         public Task<UserGroupRelation?> GetUserGroupRelation(int userId, int groupId);
+        public UserGroupInfo GetUserGroupInfo(UserGroupRelation userRelation);
+        public Task<IEnumerable<UserGroupInfo>> GetParticipants(int groupId);
 
-        public Task<bool> AddUserToGroup(AddUserToGroupInput input, int userId);
+        public Task AddUserToGroup(AddUserToGroupInput input, int userId);
+        public Task ExcludeUser(int userId, int groupId);
         public Task<int> Create(CreateGroupInput input, int ownerId);
-        public Task<bool> Delete(int id);
+        public Task UpdateUserGroupRelation(UserGroupRelation input);
+        public Task Delete(int id);
     }
 }

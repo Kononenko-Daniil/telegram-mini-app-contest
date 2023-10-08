@@ -61,7 +61,7 @@ const remove = async (subjectId, groupId, initData) => {
         throw Error("Failed to delete subject")
     }
 
-    return res.json();
+    return res;
 }
 
 const subjects = {

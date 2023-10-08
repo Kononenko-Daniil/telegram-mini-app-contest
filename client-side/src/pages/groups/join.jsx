@@ -6,40 +6,41 @@ import { useState } from 'react';
 import API from "../../api";
 import WebApp from "@twa-dev/sdk";
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
-const CreateGroupPage = () => {
+const JoinGroupPage = () => {
     const navigate = useNavigate();
 
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    const [groupId, setGroupId] = useState("");
     const [accessCode, setAccessCode] = useState("");
-    const [ownerNickname, setOwnerNickname] = useState("");
+    const [nickname, setNickname] = useState("");
 
     const [isLoaded, setIsLoaded] = useState(true);
     const [error, setError] = useState(null);
 
-    const handleCreateGroupClick = async () => {
+    const handleJoinGroupClick = async () => {
         const initData = WebApp.initData;
-        const groupInput = {
-            name,
-            description,
+        const joinGroupInput = {
+            groupId,
             accessCode,
-            ownerNickname
+            nickname
         };
 
         setIsLoaded(false);
-        await API.groups.create(groupInput, initData)
+
+        await API.groups.join(joinGroupInput, initData)
             .then((result) => {
                 setIsLoaded(true);
-                navigateHome();
+                navigateToGroupById(groupId);
             }, (error) => {
-                setError(error);
                 setIsLoaded(true);
+                setError(error);
 
                 WebApp.showAlert(`${error.message}`);
             });
     }
 
+    const navigateToGroupById = (id) => navigate(`/groups/${id}`);
     const navigateHome = () => navigate("/");
 
     return (
@@ -54,27 +55,13 @@ const CreateGroupPage = () => {
                 style={{ margin: "10px" }}
             />
 
-            <h1>New group</h1>
+            <h1>Join group</h1>
 
             <TextInput
                 style={{ margin: "5px 5px" }}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                labelText="Name"
-                disabled={!isLoaded} />
-
-            <TextInput
-                style={{ margin: "5px 5px" }}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                labelText="Description"
-                disabled={!isLoaded} />
-
-            <TextInput
-                style={{ margin: "5px 5px" }}
-                value={ownerNickname}
-                onChange={(e) => setOwnerNickname(e.target.value)}
-                labelText="Your nickname"
+                value={groupId}
+                onChange={(e) => setGroupId(e.target.value)}
+                labelText="Group ID"
                 disabled={!isLoaded} />
 
             <TextInput
@@ -84,11 +71,18 @@ const CreateGroupPage = () => {
                 labelText="Access code"
                 disabled={!isLoaded} />
 
+            <TextInput
+                style={{ margin: "5px 5px" }}
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                labelText="Your nickname"
+                disabled={!isLoaded} />
+
             <MainButton
-                text="Create group"
-                onClick={handleCreateGroupClick} />
+                text="Join group"
+                onClick={handleJoinGroupClick} />
         </div>
     )
 }
 
-export default CreateGroupPage;
+export default JoinGroupPage;

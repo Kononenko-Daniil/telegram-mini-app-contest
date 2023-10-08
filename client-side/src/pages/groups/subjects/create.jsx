@@ -20,6 +20,8 @@ const CreateSubjectPage = () => {
     const [error, setError] = useState(null);
 
     const handleCreateSubjectClick = async () => {
+        const groupId = params.groupId;
+        const initData = WebApp.initData;
         const subjectInput = {
             name,
             lessonType,
@@ -27,10 +29,9 @@ const CreateSubjectPage = () => {
         };
 
         setIsLoaded(false);
-        await API.subjects.create(subjectInput, params.groupId, WebApp.initData)
+        await API.subjects.create(subjectInput, groupId, initData)
             .then((result) => {
                 setIsLoaded(true);
-
                 navigateToSubjects();
             }, (error) => {
                 setIsLoaded(true);
@@ -40,9 +41,7 @@ const CreateSubjectPage = () => {
             });
     }
 
-    const navigateToSubjects = () => {
-        navigate(`/groups/${params.groupId}/subjects`);
-    }
+    const navigateToSubjects = () => navigate(`/groups/${params.groupId}/subjects`);
 
     return (
         <div className="center">
@@ -76,13 +75,13 @@ const CreateSubjectPage = () => {
                     index={1}
                     variant="danger"
                     label="LECTURE"
-                    onChange={handleLessonTypeChange}
+                    onChange={(index) => setLessonType(index)}
                     isChecked={lessonType == 1} />
                 <RadioButton
                     index={2}
                     variant="success"
                     label="PRACTISE"
-                    onChange={handleLessonTypeChange}
+                    onChange={(index) => setLessonType(index)}
                     isChecked={lessonType == 2} />
             </div>
 

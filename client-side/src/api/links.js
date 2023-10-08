@@ -45,7 +45,7 @@ const remove = async (linkId, groupId, initData) => {
         throw Error("Failed to delete link")
     }
 
-    return res.json();
+    return res;
 }
 
 const links = {

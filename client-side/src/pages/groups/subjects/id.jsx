@@ -5,11 +5,15 @@ import { useState, useEffect } from 'react';
 import API from "../../../api";
 import WebApp from "@twa-dev/sdk";
 import { useNavigate, useParams } from 'react-router-dom';
+import services from '../../../misc/Services';
+import LessonTypeTag from '../../../components/LessonTypeTag';
+import HometasksList from '../../../components/HometasksList';
 
 const SubjectByIdPage = () => {
     const navigate = useNavigate();
     const params = useParams();
 
+    const [userGroupInfo, setUserGroupInfo] = useState(null);
     const [subject, setSubject] = useState(null);
     const [hometasks, setHometasks] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -20,47 +24,25 @@ const SubjectByIdPage = () => {
         const subjectId = params.id;
         const initData = WebApp.initData;
 
-        API.subjects.getById(groupId, subjectId, initData)
-            .then((subjectResult) => {
-                setSubject(subjectResult);
+        const subjectByIdRequest = API.subjects.getById(groupId, subjectId, initData);
+        const hometasksBySubjectRequest = API.hometasks.getBySubject(groupId, subjectId, initData);
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
 
-                API.hometasks.getBySubject(groupId, subjectId, initData)
-                    .then((hometasksResult) => {
-                        setIsLoaded(true);
-                        setHometasks(hometasksResult);
-                    }, (error) => {
-                        setIsLoaded(true);
-                        setError(error);
-                    });
-            }, (error) => {
+        Promise.all([userGroupInfoRequest, subjectByIdRequest, hometasksBySubjectRequest])
+            .then(([userGroupInfoResponse, subjectByIdResponse, hometasksBySubjectResponse]) => {
+                setUserGroupInfo(userGroupInfoResponse);
+                setSubject(subjectByIdResponse);
+                setHometasks(hometasksBySubjectResponse);
                 setIsLoaded(true);
+            })
+            .catch((error) => {
                 setError(error);
+                setIsLoaded(true);
             });
-
     }, []);
 
-    const navigateToSubjects = () => {
-        navigate(`/groups/${params.groupId}/subjects/`);
-    }
-
-    const navigateToHometaskById = (id) => {
-        navigate(`/groups/${params.groupId}/hometasks/${id}`);
-    }
-
-    const navigateToHometaskCreate = () => {
-        navigate(`/groups/${params.groupId}/subjects/${params.id}/hometasks/create`);
-    }
-
-    const parseLessonType = (lessonType) => {
-        switch (lessonType) {
-            case 0:
-                return { variant: "", text: "NONE" };
-            case 1:
-                return { variant: "danger", text: "LECTURE" };
-            case 2:
-                return { variant: "success", text: "PRACTICE" };
-        }
-    }
+    const navigateToSubjects = () => navigate(`/groups/${params.groupId}/subjects/`);
+    const navigateToHometaskCreate = () => navigate(`/groups/${params.groupId}/subjects/${params.id}/hometasks/create`);
 
     if (!isLoaded) {
         return (
@@ -91,34 +73,36 @@ const SubjectByIdPage = () => {
     return (
         <div className='center'>
             <BackButton onClick={navigateToSubjects} />
-            
+
             <div style={{ overflow: "hidden" }} className='center'>
-                <div className={`tag ${parseLessonType(subject.lessonType).variant}`}>
-                    {parseLessonType(subject.lessonType).text}
-                </div>
+                <LessonTypeTag lessonType={subject.lessonType} />
                 <h2>{subject.name}</h2>
                 <p>{subject.teacherName}</p>
             </div>
 
             {
-                hometasks.map((hometask, index) =>
-                    <div className="card" key={index}
-                        onClick={() => navigateToHometaskById(hometask.id)}>
-                        <div
-                            className="card-text-block"
-                            style={{ width: "100%", paddingLeft: "10px" }}>
-                            <div className={`tag ${Date.now() < new Date(hometask.deadline) ?
-                                "success" : "danger"}`} style={{ margin: "5px 0px 0px 0px" }}>
-                                {new Date(hometask.deadline).toLocaleString()}
-                            </div>
-                            <h3 className="card-text">{hometask.content}</h3>
-                        </div>
-                    </div>)
+                hometasks.length === 0 ?
+                    <>
+                        <Lottie
+                            options={animationOptions(animation.nothing_here_animation)}
+                            height={"20%"}
+                            width={"20%"}
+                            style={{ margin: "10px" }}
+                        />
+
+                        <p>There aren`t any hometasks yet</p>
+                    </> : <></>
+            }
+            
+            <HometasksList hometasks={hometasks} groupId={params.groupId} userGroupInfo={userGroupInfo} />
+
+            {
+                userGroupInfo.canEdit ?
+                    <MainButton
+                        text="Create hometask"
+                        onClick={navigateToHometaskCreate} /> : <></>
             }
 
-            <MainButton
-                text="Create hometask"
-                onClick={navigateToHometaskCreate} />
         </div>
     )
 }
