@@ -24,21 +24,4 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Push the image to Docker Hub
       run: docker push daniilkan/student-copilot-api
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build_and_push
-    
-    steps:
-      - name: Deploy to Digital Ocean droplet via SSH action
-        uses: appleboy/ssh-action@v0.1.3
-        with:
-          host: ${{ secrets.DROPLET_HOST }}
-          username: root
-          password: ${{ secrets.DROPLET_PASSWORD }}
-          script: |
-            docker stop $(docker ps -a -q)
-            docker rm
-            docker run -p 80:80 daniilkan/student-copilot-api:latest
-            docker run -it -e NGROK_AUTHTOKEN=${{secrets.NGROK_AUTHTOKEN}} \
-              ngrok/ngrok http 80 --domain=glowing-usually-robin.ngrok-free.app
+      
