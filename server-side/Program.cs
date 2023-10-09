@@ -24,10 +24,10 @@ builder.Services.AddCors(p => p.AddPolicy(ALLOW_ORIGINS, policy => {
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseHttpsRedirection();
 
 app.UseCors(ALLOW_ORIGINS);
 
