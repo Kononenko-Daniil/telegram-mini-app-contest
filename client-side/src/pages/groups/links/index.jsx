@@ -69,7 +69,7 @@ const LinksPage = () => {
                 case deleteLinkButton.id: {
                     API.links.remove(link.id, groupId)
                         .then((result) => {
-                            window.location.reload(true)
+                            navigateToCurrent();
                         }, (error) => {
                             WebApp.showAlert("Something went wrong while deleting link");
                         })
@@ -80,6 +80,7 @@ const LinksPage = () => {
     }
 
     const navigateToLinkCreate = () => navigate(`/groups/${params.groupId}/links/create`);
+    const navigateToCurrent = () =>  navigate(0);
     const navigateToGroupById = () => navigate(`/groups/${params.groupId}`);
 
     if (error) {
