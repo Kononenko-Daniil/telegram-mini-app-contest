@@ -35,11 +35,10 @@ jobs:
         with:
           host: ${{ secrets.DROPLET_HOST }}
           username: root
-          key: ${{ secrets.DROPLET_SSH_KEY }}
-          passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
+          password: ${{ secrets.DROPLET_PASSWORD }}
           script: |
             docker stop $(docker ps -a -q)
             docker rm
             docker run -p 80:80 daniilkan/student-copilot-api:latest
-            docker run -it -e NGROK_AUTHTOKEN=2VppY7vHrId6I8DOskfgymxBSkq_2yZcY3uRq7fMur9BVynEY \
+            docker run -it -e NGROK_AUTHTOKEN=${{secrets.NGROK_AUTHTOKEN}} \
               ngrok/ngrok http 80 --domain=glowing-usually-robin.ngrok-free.app
