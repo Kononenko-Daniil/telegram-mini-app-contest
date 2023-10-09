@@ -31,8 +31,6 @@ const HometasksList = (props) => {
                 deleteHometaskButton
             ]
         }, (buttonId) => {
-            const initData = WebApp.initData;
-
             switch (buttonId) {
                 case openHometaskButton.id: {
 
@@ -40,7 +38,7 @@ const HometasksList = (props) => {
                     break;
                 }
                 case deleteHometaskButton.id: {
-                    API.hometasks.remove(groupId, hometask.id, initData)
+                    API.hometasks.remove(groupId, hometask.id)
                         .then((result) => {
                             navigateToCurrent();
                         }, (error) => {

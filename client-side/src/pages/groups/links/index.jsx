@@ -18,10 +18,9 @@ const LinksPage = () => {
 
     useEffect(() => {
         const groupId = params.groupId;
-        const initData = WebApp.initData;
 
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
-        const linksByGroupRequest = API.links.getByGroup(groupId, initData);
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
+        const linksByGroupRequest = API.links.getByGroup(groupId);
 
         setIsLoaded(false);
         Promise.all([userGroupInfoRequest, linksByGroupRequest])
@@ -61,7 +60,6 @@ const LinksPage = () => {
             ]
         }, (buttonId) => {
             const groupId = params.groupId;
-            const initData = WebApp.initData;
 
             switch (buttonId) {
                 case openLinkButton.id: {
@@ -69,7 +67,7 @@ const LinksPage = () => {
                     break;
                 }
                 case deleteLinkButton.id: {
-                    API.links.remove(link.id, groupId, initData)
+                    API.links.remove(link.id, groupId)
                         .then((result) => {
                             navigateToCurrent();
                         }, (error) => {

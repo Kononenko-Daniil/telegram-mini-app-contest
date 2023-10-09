@@ -3,7 +3,6 @@ import { animation, animationOptions } from '../../../Animations';
 import Lottie from "react-lottie";
 import { useState, useEffect } from 'react';
 import API from "../../../api";
-import WebApp from "@twa-dev/sdk";
 import { useNavigate, useParams } from 'react-router-dom';
 import HometasksList from '../../../components/HometasksList';
 
@@ -18,10 +17,9 @@ const HometasksPage = () => {
 
     useEffect(() => {
         const groupId = params.groupId;
-        const initData = WebApp.initData;
 
-        const hometasksByGroup = API.hometasks.getByGroup(groupId, initData);
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
+        const hometasksByGroup = API.hometasks.getByGroup(groupId);
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
 
         Promise.all([userGroupInfoRequest, hometasksByGroup])
             .then(([userGroupInfoResponse, hometasksByGroupResponse]) => {

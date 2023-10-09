@@ -17,9 +17,8 @@ const HometaskByIdPage = () => {
     useEffect(() => {
         const groupId = params.groupId;
         const hometaskId = params.id;
-        const initData = WebApp.initData;
 
-        API.hometasks.getById(groupId, hometaskId, initData)
+        API.hometasks.getById(groupId, hometaskId)
             .then((result) => {
                 setHometask(result);
                 setIsLoaded(true);

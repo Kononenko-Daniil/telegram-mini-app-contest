@@ -19,7 +19,6 @@ const CreateGroupPage = () => {
     const [error, setError] = useState(null);
 
     const handleCreateGroupClick = async () => {
-        const initData = WebApp.initData;
         const groupInput = {
             name,
             description,
@@ -28,7 +27,7 @@ const CreateGroupPage = () => {
         };
 
         setIsLoaded(false);
-        await API.groups.create(groupInput, initData)
+        await API.groups.create(groupInput)
             .then((result) => {
                 setIsLoaded(true);
                 navigateHome();

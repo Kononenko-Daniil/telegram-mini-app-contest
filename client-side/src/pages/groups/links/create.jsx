@@ -18,14 +18,13 @@ const CreateLinkPage = () => {
 
     const handleCreateLinkClick = async () => {
         const groupId = params.groupId;
-        const initData = WebApp.initData;
         const linkInput = {
             name,
             url
         };
 
         setIsLoaded(false);
-        await API.links.create(linkInput, groupId, initData)
+        await API.links.create(linkInput, groupId)
             .then((result) => {
                 setIsLoaded(true);
                 navigateToLinks();

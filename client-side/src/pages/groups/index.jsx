@@ -14,9 +14,7 @@ const GroupsPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const initData = WebApp.initData;
-
-        API.groups.getMy(initData)
+        API.groups.getMy()
             .then((result) => {
                 setGroups(result);
                 setIsLoaded(true);

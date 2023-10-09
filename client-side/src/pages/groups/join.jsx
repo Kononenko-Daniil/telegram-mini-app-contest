@@ -19,7 +19,6 @@ const JoinGroupPage = () => {
     const [error, setError] = useState(null);
 
     const handleJoinGroupClick = async () => {
-        const initData = WebApp.initData;
         const joinGroupInput = {
             groupId,
             accessCode,
@@ -28,7 +27,7 @@ const JoinGroupPage = () => {
 
         setIsLoaded(false);
 
-        await API.groups.join(joinGroupInput, initData)
+        await API.groups.join(joinGroupInput)
             .then((result) => {
                 setIsLoaded(true);
                 navigateToGroupById(groupId);

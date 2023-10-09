@@ -1,11 +1,9 @@
 import { config } from "../Constants";
+import headers from "./Headers";
 
-const getByGroup = async(groupId, initData) => {
+const getByGroup = async(groupId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/subjects`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -15,12 +13,9 @@ const getByGroup = async(groupId, initData) => {
     return res.json();
 }
 
-const getById = async(groupId, subjectId, initData) => {
+const getById = async(groupId, subjectId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/subjects/${subjectId}`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -31,13 +26,10 @@ const getById = async(groupId, subjectId, initData) => {
     return res.json();
 }
 
-const create = async (subjectInput, groupId, initData) => {
+const create = async (subjectInput, groupId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/subjects/create`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        },
+        headers,
         body: JSON.stringify(subjectInput)
     });
 
@@ -48,13 +40,10 @@ const create = async (subjectInput, groupId, initData) => {
     return res.json();
 }
 
-const remove = async (subjectId, groupId, initData) => {
+const remove = async (subjectId, groupId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/subjects/${subjectId}/delete`, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
