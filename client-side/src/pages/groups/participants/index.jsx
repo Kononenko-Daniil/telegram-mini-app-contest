@@ -110,7 +110,7 @@ const ParticipantsPage = () => {
 
             API.groups.updateParticipant(updatedParticipant, groupId)
                 .then((result) => {
-                    navigateCurrent();
+                    window.location.reload(true);
                 }, (error) => {
                     WebApp.showAlert("Something went wrong while updating participants")
                 });
@@ -118,7 +118,6 @@ const ParticipantsPage = () => {
     }
 
     const navigateToGroupById = () => navigate(`/groups/${params.groupId}`);
-    const navigateCurrent = () => navigate(0);
 
     if (error) {
         return (

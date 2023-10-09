@@ -40,7 +40,7 @@ const HometasksList = (props) => {
                 case deleteHometaskButton.id: {
                     API.hometasks.remove(groupId, hometask.id)
                         .then((result) => {
-                            navigateToCurrent();
+                            window.location.reload(true)
                         }, (error) => {
                             WebApp.showAlert("Something went wrong while deleting hometask");
                         })
@@ -49,8 +49,7 @@ const HometasksList = (props) => {
             }
         })
     }
-
-    const navigateToCurrent = () => navigate(0);
+    
     const navigateToHometaskById = (id) => navigate(`/groups/${groupId}/hometasks/${id}`);
 
     return (
