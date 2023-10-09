@@ -29,8 +29,6 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 app.UseCors(ALLOW_ORIGINS);
 
 app.UseMiddleware<TelegramUserMiddleware>();
