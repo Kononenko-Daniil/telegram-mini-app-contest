@@ -18,14 +18,13 @@ const CreateHometaskPage = () => {
     const handleCreateHometaskClick = async () => {
         const groupId = params.groupId;
         const subjectId = params.id;
-        const initData = WebApp.initData;
         const hometaskInput = {
             content,
             deadline: new Date(deadline)
         };
         
         setIsLoaded(false);
-        await API.hometasks.create(hometaskInput, groupId, subjectId, initData)
+        await API.hometasks.create(hometaskInput, groupId, subjectId)
             .then((result) => {
                 setIsLoaded(true);
                 navigateToSubjectById();

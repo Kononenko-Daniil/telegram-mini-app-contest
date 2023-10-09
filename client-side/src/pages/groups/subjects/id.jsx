@@ -22,11 +22,10 @@ const SubjectByIdPage = () => {
     useEffect(() => {
         const groupId = params.groupId;
         const subjectId = params.id;
-        const initData = WebApp.initData;
 
-        const subjectByIdRequest = API.subjects.getById(groupId, subjectId, initData);
-        const hometasksBySubjectRequest = API.hometasks.getBySubject(groupId, subjectId, initData);
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
+        const subjectByIdRequest = API.subjects.getById(groupId, subjectId);
+        const hometasksBySubjectRequest = API.hometasks.getBySubject(groupId, subjectId);
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
 
         Promise.all([userGroupInfoRequest, subjectByIdRequest, hometasksBySubjectRequest])
             .then(([userGroupInfoResponse, subjectByIdResponse, hometasksBySubjectResponse]) => {

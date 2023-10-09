@@ -1,11 +1,9 @@
 import { config } from "../Constants";
+import headers from "./Headers";
 
-const getBySubject = async (groupId, subjectId, initData) => {
+const getBySubject = async (groupId, subjectId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/subjects/${subjectId}/hometasks`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -16,12 +14,9 @@ const getBySubject = async (groupId, subjectId, initData) => {
     return res.json();
 }
 
-const getByGroup = async (groupId, initData) => {
+const getByGroup = async (groupId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/hometasks`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -32,12 +27,9 @@ const getByGroup = async (groupId, initData) => {
     return res.json();
 }
 
-const getById = async (groupId, hometaskId, initData) => {
+const getById = async (groupId, hometaskId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/hometasks/${hometaskId}`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -47,14 +39,11 @@ const getById = async (groupId, hometaskId, initData) => {
     return res.json();
 }
 
-const create = async (hometaskInput, groupId, subjectId, initData) => {
+const create = async (hometaskInput, groupId, subjectId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}
         /subjects/${subjectId}/hometasks/create`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        },
+        headers,
         body: JSON.stringify(hometaskInput)
     });
 
@@ -66,13 +55,10 @@ const create = async (hometaskInput, groupId, subjectId, initData) => {
 }
 
 
-const remove = async (groupId, hometaskId, initData) => {
+const remove = async (groupId, hometaskId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/hometasks/${hometaskId}/delete`, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {

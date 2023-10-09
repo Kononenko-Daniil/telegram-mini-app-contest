@@ -18,10 +18,9 @@ const SubjectsPage = () => {
 
     useEffect(() => {
         const groupId = params.groupId;
-        const initData = WebApp.initData;
 
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
-        const subjectsRequest = API.subjects.getByGroup(params.groupId, WebApp.initData);
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
+        const subjectsRequest = API.subjects.getByGroup(params.groupId);
 
         Promise.all([userGroupInfoRequest, subjectsRequest])
             .then(([userGroupInfoResponse, subjectsResponse]) => {

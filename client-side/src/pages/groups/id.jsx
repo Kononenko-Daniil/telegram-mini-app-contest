@@ -18,10 +18,9 @@ const GroupByIdPage = () => {
 
     useEffect(() => {
         const groupId = params.id;
-        const initData = WebApp.initData;
 
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
-        const groupByIdRequest = API.groups.getById(params.id, WebApp.initData);
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
+        const groupByIdRequest = API.groups.getById(params.id);
 
         Promise.all([userGroupInfoRequest, groupByIdRequest])
             .then(([userGroupInfoResponse, groupResponse]) => {
@@ -37,10 +36,9 @@ const GroupByIdPage = () => {
 
     const handleDeleteGroupClick = async () => {
         const groupId = params.id;
-        const initData = WebApp.initData
 
         setIsLoaded(false);
-        await API.groups.remove(groupId, initData)
+        await API.groups.remove(groupId)
             .then((result) => {
                 navigateHome();
             }, (error) => {
@@ -51,10 +49,9 @@ const GroupByIdPage = () => {
 
     const handleExcludeMeClick = async () => {
         const groupId = params.id;
-        const initData = WebApp.initData;
 
         setIsLoaded(false);
-        await API.groups.excludeMe(groupId, initData)
+        await API.groups.excludeMe(groupId)
             .then((result) => {
                 navigateHome();
             }, (error) => {

@@ -19,10 +19,9 @@ const ParticipantsPage = () => {
 
     useEffect(() => {
         const groupId = params.groupId;
-        const initData = WebApp.initData;
 
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId, initData);
-        const participantsRequest = API.groups.getParticipants(groupId, initData);
+        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
+        const participantsRequest = API.groups.getParticipants(groupId);
 
         Promise.all([userGroupInfoRequest, participantsRequest])
             .then(([userGroupInfoResponse, perticipantsResponse]) => {
@@ -37,6 +36,11 @@ const ParticipantsPage = () => {
     }, []);
 
     const handleParticipantClick = (participant) => {
+        if (participant.userId === userGroupInfo.userId) {
+            WebApp.showAlert("It is forbidden to change you information");
+            return;
+        }
+
         const makeOwnerButton = {
             id: "make-owner-button",
             text: "Make owner",
@@ -77,10 +81,9 @@ const ParticipantsPage = () => {
             buttons
         }, (buttonId) => {
             const groupId = params.groupId;
-            const initData = WebApp.initData;
 
             if (buttonId === excludeButton.id) {
-                API.groups.excludeUser(groupId, participant.userId, initData)
+                API.groups.excludeUser(groupId, participant.userId)
                     .then((result) => {
                         getParticipants();
                     }, (error) => {
@@ -105,7 +108,7 @@ const ParticipantsPage = () => {
                     updatedParticipant.type = UserType.VIEWER; break;
             }
 
-            API.groups.updateParticipant(updatedParticipant, groupId, initData)
+            API.groups.updateParticipant(updatedParticipant, groupId)
                 .then((result) => {
                     navigateCurrent();
                 }, (error) => {

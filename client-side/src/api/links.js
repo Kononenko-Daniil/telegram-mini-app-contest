@@ -1,11 +1,9 @@
 import { config } from "../Constants";
+import headers from "./Headers";
 
-const getByGroup = async(groupId, initData) => {
+const getByGroup = async(groupId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/links`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -15,13 +13,10 @@ const getByGroup = async(groupId, initData) => {
     return res.json();
 }
 
-const create = async (linkInput, groupId, initData) => {
+const create = async (linkInput, groupId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/links/create`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        },
+        headers,
         body: JSON.stringify(linkInput)
     });
 
@@ -32,13 +27,10 @@ const create = async (linkInput, groupId, initData) => {
     return res.json();
 }
 
-const remove = async (linkId, groupId, initData) => {
+const remove = async (linkId, groupId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/links/${linkId}/delete`, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {

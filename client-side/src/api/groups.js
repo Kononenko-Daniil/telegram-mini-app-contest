@@ -1,11 +1,9 @@
 import { config } from "../Constants";
+import headers from "./Headers";
 
-const getMy = async (initData) => {
+const getMy = async () => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/my`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -15,12 +13,9 @@ const getMy = async (initData) => {
     return res.json();
 }
 
-const getById = async (id, initData) => {
-    const res = await fetch(`${config.url.API_BASE_URL}/groups/${id}`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+const getById = async (groupId) => {
+    const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}`, {
+        headers
     });
 
     if (!res.ok) {
@@ -30,12 +25,9 @@ const getById = async (id, initData) => {
     return res.json();
 }
 
-const getUserInfo = async (id, initData) => {
-    const res = await fetch(`${config.url.API_BASE_URL}/groups/${id}/user-info`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+const getUserInfo = async (groupId) => {
+    const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/user-info`, {
+        headers
     });
 
     if (!res.ok) {
@@ -45,12 +37,9 @@ const getUserInfo = async (id, initData) => {
     return res.json();
 }
 
-const getParticipants = async (id, initData) => {
-    const res = await fetch(`${config.url.API_BASE_URL}/groups/${id}/participants`, {
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+const getParticipants = async (groupId) => {
+    const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/participants`, {
+        headers
     });
 
     if (!res.ok) {
@@ -60,13 +49,10 @@ const getParticipants = async (id, initData) => {
     return res.json();
 }
 
-const create = async (groupInput, initData) => {
+const create = async (groupInput) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/create`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        },
+        headers,
         body: JSON.stringify(groupInput)
     });
 
@@ -77,13 +63,10 @@ const create = async (groupInput, initData) => {
     return res.json();
 }
 
-const updateParticipant = async (participantInput, groupId, initData) => {
+const updateParticipant = async (participantInput, groupId) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/participants/update`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        },
+        headers,
         body: JSON.stringify(participantInput)
     });
 
@@ -94,13 +77,10 @@ const updateParticipant = async (participantInput, groupId, initData) => {
     return res;
 }
 
-const join = async (joinGroupInput, initData) => {
+const join = async (joinGroupInput) => {
     const res = await fetch(`${config.url.API_BASE_URL}/groups/participants/join`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        },
+        headers,
         body: JSON.stringify(joinGroupInput)
     });
 
@@ -111,13 +91,10 @@ const join = async (joinGroupInput, initData) => {
     return res;
 }
 
-const remove = async (id, initData) => {
-    const res = await fetch(`${config.url.API_BASE_URL}/groups/${id}/delete`, {
+const remove = async (groupId) => {
+    const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/delete`, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -127,13 +104,10 @@ const remove = async (id, initData) => {
     return res;
 }
 
-const excludeMe = async (id, initData) => {
-    const res = await fetch(`${config.url.API_BASE_URL}/groups/${id}/participants/exclude-me`, {
+const excludeMe = async (groupId) => {
+    const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/participants/exclude-me`, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {
@@ -143,13 +117,10 @@ const excludeMe = async (id, initData) => {
     return res;
 }
 
-const excludeUser = async (id, userId, initData) => {
-    const res = await fetch(`${config.url.API_BASE_URL}/groups/${id}/participants/${userId}/delete`, {
+const excludeUser = async (groupId, userId) => {
+    const res = await fetch(`${config.url.API_BASE_URL}/groups/${groupId}/participants/${userId}/delete`, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "InitData": initData
-        }
+        headers
     });
 
     if (!res.ok) {

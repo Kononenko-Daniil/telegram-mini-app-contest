@@ -21,7 +21,6 @@ const CreateSubjectPage = () => {
 
     const handleCreateSubjectClick = async () => {
         const groupId = params.groupId;
-        const initData = WebApp.initData;
         const subjectInput = {
             name,
             lessonType,
@@ -29,7 +28,7 @@ const CreateSubjectPage = () => {
         };
 
         setIsLoaded(false);
-        await API.subjects.create(subjectInput, groupId, initData)
+        await API.subjects.create(subjectInput, groupId)
             .then((result) => {
                 setIsLoaded(true);
                 navigateToSubjects();
