@@ -8,6 +8,9 @@ namespace server_side.Database
     {
         public DbSet<Group> Groups { get; set; }
         public DbSet<UserGroupRelation> UserGroupRelations { get; set; }
+        public DbSet<Link> Links { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Hometask> Hometasks { get; set; }
 
         public MySQLContext(DbContextOptions<MySQLContext> options) : base(options) { }
 

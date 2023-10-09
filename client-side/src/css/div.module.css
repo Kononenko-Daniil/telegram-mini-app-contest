@@ -1,0 +1,52 @@
+@import "./var.module.css";
+
+div.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.card {
+    width: 100%;
+    padding: 1px 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+div.card:hover {
+    background-color: var(--secondary-bg-color);
+}
+
+div.card-text-block {
+    flex-shrink: 1;
+    overflow: hidden;
+}
+
+.card-text {
+    overflow-wrap: break-word;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.card-logo {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    font-size: 50px;
+    margin: 0px 10px;
+}
+
+div.radio-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

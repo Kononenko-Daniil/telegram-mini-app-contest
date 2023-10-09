@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server_side.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace server_side.Extensions.Contexts
 {
@@ -11,6 +10,12 @@ namespace server_side.Extensions.Contexts
                .HasKey(e => new { e.Id });
             modelBuilder.Entity<UserGroupRelation>()
                 .HasKey(e => new { e.UserId, e.GroupId });
+            modelBuilder.Entity<Link>()
+               .HasKey(e => new { e.Id });
+            modelBuilder.Entity<Subject>()
+               .HasKey(e => new { e.Id });
+            modelBuilder.Entity<Hometask>()
+               .HasKey(e => new { e.Id });
 
             return modelBuilder;
         }

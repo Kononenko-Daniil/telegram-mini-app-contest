@@ -1,43 +1,43 @@
-import WebApp from '@twa-dev/sdk'
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import CreateGroupPage from './pages/groups/create';
+import GroupByIdPage from './pages/groups/id';
+import LinksPage from './pages/groups/links';
+import CreateLinkPage from './pages/groups/links/create';
+import CreateSubjectPage from './pages/groups/subjects/create';
+import SubjectsPage from './pages/groups/subjects';
+import SubjectByIdPage from './pages/groups/subjects/id';
+import CreateHometaskPage from './pages/groups/hometasks/create';
+import HometaskByIdPage from './pages/groups/hometasks/id';
+import HometasksPage from './pages/groups/hometasks';
+import GroupsPage from './pages/groups';
+import JoinGroupPage from './pages/groups/join';
+import ParticipantsPage from './pages/groups/participants';
 
 function App() {
-    const handleClick = () => {
-        WebApp.showPopup({
-            title: "Hello", 
-            message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-            buttons: [
-                {
-                    id: "OK-button",
-                    type: "ok",
-                },
-                {
-                    id: "CLOSE-button",
-                    type: "close"
-                }
-            ]
-        }, (id) => {console.log(id)});
-    }
-
     return (
-        <div style={{flexDirection: "column", display: "flex", padding: "5px"}}>
-            <button className="regular primary" onClick={handleClick}>Hello</button>
-            <button className="regular primary-tinned" onClick={handleClick}>Hello</button>
-            <button className="regular danger" onClick={handleClick}>Hello</button>
-            <button className="regular danger-tinned" onClick={handleClick}>Hello</button>
-            <button className="regular success" onClick={handleClick}>Hello</button>
-            <button className="regular success-tinned" onClick={handleClick}>Hello</button>
+        <div style={{display: "flex", flexDirection: "column", padding: "5px"}}>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<GroupsPage />} />
+                    <Route path="/groups" element={<GroupsPage />} />
+                    <Route path="/groups/create" element={<CreateGroupPage />} />
+                    <Route path="/groups/join" element={<JoinGroupPage />} />
+                    <Route path="/groups/:id" element={<GroupByIdPage />} />
 
-            <button className="regular success-tinned sm" onClick={handleClick}>Hello</button>
+                    <Route path="/groups/:groupId/participants" element={<ParticipantsPage />} />
 
-            <h1>Hello</h1>
-            <div className="divider" />
-            <div className='tag primary'>H/W</div>
-            <p>Hint color is good</p>
-            <a href="/">Hello link</a>
+                    <Route path="/groups/:groupId/links" element={<LinksPage />} />
+                    <Route path="/groups/:groupId/links/create" element={<CreateLinkPage />} />
 
-            <div className='avatar sm'>😀</div>
-            <div className='avatar md'>😱</div>
-            <div className='avatar lg'>👨‍🏫</div>
+                    <Route path="/groups/:groupId/hometasks" element={<HometasksPage />} />
+                    <Route path="/groups/:groupId/hometasks/:id" element={<HometaskByIdPage />} />
+
+                    <Route path="/groups/:groupId/subjects" element={<SubjectsPage />} />
+                    <Route path="/groups/:groupId/subjects/:id" element={<SubjectByIdPage />} />
+                    <Route path="/groups/:groupId/subjects/create" element={<CreateSubjectPage />} />
+                    <Route path="/groups/:groupId/subjects/:id/hometasks/create" element={<CreateHometaskPage />} />
+                </Routes>
+            </Router>
         </div>
     )
 }
