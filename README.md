@@ -1,16 +1,16 @@
 # Student Copilot (Telegram Mini-app contest)
 
-This is repository of Student Copilot, my solve of Telegram Mini-app contest. Here is a step-bystep guide,
-which describes how to setup local evvironment for running this mini-app locally on your machine.
+This is repository of Student Copilot, my solve of Telegram Mini-app contest. Here is a step-by-step guide,
+which describes how to setup local environment for running this mini-app locally on your machine.
 
 ### Documentation table of contents
- - Technologies
- - Step-by-step guide
+ - [API documentation](./docs/api-docs.md)
+ - [UI documentation](./docs/ui-docs.md)
 
 # Technologies
- - Server-side: .NET 7 (Web-API, REST API)
- - Database: MySQL, Planetscale (server)
- - Client-side: Vite (React)
+ - **Server-side**: .NET 7 (Web-API, REST API)
+ - **Database**: MySQL, Planetscale (server)
+ - **Client-side**: Vite (React)
 
 # Step-by-step setup guide
 
