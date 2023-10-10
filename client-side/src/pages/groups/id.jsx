@@ -147,13 +147,10 @@ const GroupByIdPage = () => {
             }
 
             {
-                userGroupInfo.isOwner ?
-                    <button
-                        onClick={handleCopyAccessGroupData}
-                        className='primary-tinned'
-                        style={{ width: "90%", marginTop: "10px" }}>
-                        Copy access information
-                    </button> : <></>
+                <>
+                    <h4>Group ID: {group.id}</h4>
+                    <h4 style={{marginTop: "-10px"}}>Access code: {group.accessCode}</h4>
+                </>
             }
 
             <button
