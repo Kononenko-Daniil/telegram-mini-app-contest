@@ -33,7 +33,7 @@ You can test my solution in [Student Copilot bot](https://t.me/stud_copilot_bot)
 
 Pull this repository to your local machine:
 ```console
-> git pull git@github.com:Kononenko-Daniil/telegram-mini-app-contest.git
+git pull git@github.com:Kononenko-Daniil/telegram-mini-app-contest.git
 ```
 
 ### Bot setup
@@ -86,7 +86,7 @@ Open *appsettings.json* file and add this JSON code to it:
 Than open **Package Manager Console** and apply migrations to your database:
 
 ```console
-> Update-Database
+Update-Database
 ```
 
 And that's it! Now you can run your **Web-API project**. After running it will open **Swagger** page in browser.
@@ -98,7 +98,7 @@ Now we can go to setuping **client-side** project.
 Open **client-side** project with **Visual Studio Code** *(recomended)*. Than open console and run install command:
 
 ``` console 
-> npm install
+npm install
 ```
 
 Than go to */src/Constants.js* file and input **production** and **development** API URL (if you are working only locally, fill free to pass **development** API URL to production configuration).
