@@ -1,12 +1,12 @@
 const prod = {
     url: {
-        API_BASE_URL: "https://localhost:7083"
+        API_BASE_URL: "https://glowing-usually-robin.ngrok-free.app"
     }
 }
 
 const dev = {
     url: {
-        API_BASE_URL: "https://glowing-usually-robin.ngrok-free.app"
+        API_BASE_URL: "https://localhost:7083"
     }
 };
 
