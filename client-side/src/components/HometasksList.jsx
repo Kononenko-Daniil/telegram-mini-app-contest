@@ -4,7 +4,7 @@ import WebApp from "@twa-dev/sdk";
 import API from "../api";
 
 const HometasksList = (props) => {
-    const { hometasks, groupId, userGroupInfo } = props;
+    const { hometasks, groupId, userGroupInfo, onDeleting } = props;
     const navigate = useNavigate();
 
     const handleHometaskClick = (hometask) => {
@@ -40,7 +40,7 @@ const HometasksList = (props) => {
                 case deleteHometaskButton.id: {
                     API.hometasks.remove(groupId, hometask.id)
                         .then((result) => {
-                            navigateToCurrent();
+                            onDeleting();
                         }, (error) => {
                             WebApp.showAlert("Something went wrong while deleting hometask");
                         })
@@ -50,7 +50,6 @@ const HometasksList = (props) => {
         })
     }
 
-    const navigateToCurrent = () => navigate(0);
     const navigateToHometaskById = (id) => navigate(`/groups/${groupId}/hometasks/${id}`);
 
     return (

@@ -16,12 +16,17 @@ const HometasksPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        getHometasks();
+    }, []);
+
+    const getHometasks = async () => {
+        setIsLoaded(false);
         const groupId = params.groupId;
 
-        const hometasksByGroup = API.hometasks.getByGroup(groupId);
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
+        const hometasksByGroup = await API.hometasks.getByGroup(groupId);
+        const userGroupInfoRequest = await API.groups.getUserInfo(groupId);
 
-        Promise.all([userGroupInfoRequest, hometasksByGroup])
+        await Promise.all([userGroupInfoRequest, hometasksByGroup])
             .then(([userGroupInfoResponse, hometasksByGroupResponse]) => {
                 setUserGroupInfo(userGroupInfoResponse);
                 setHometasks(hometasksByGroupResponse);
@@ -31,7 +36,7 @@ const HometasksPage = () => {
                 setError(error);
                 setIsLoaded(true);
             });
-    }, []);
+    }
 
     const navigateBack = () => navigate(-1);
 
@@ -81,7 +86,11 @@ const HometasksPage = () => {
     return (
         <div className='center'>
             <BackButton onClick={navigateBack} />
-            <HometasksList hometasks={hometasks} groupId={params.groupId} userGroupInfo={userGroupInfo} />
+            <HometasksList 
+                hometasks={hometasks} 
+                groupId={params.groupId} 
+                userGroupInfo={userGroupInfo}
+                onDeleting={getHometasks} />
         </div>
     )
 }

@@ -18,12 +18,17 @@ const ParticipantsPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        getParticipants();
+    }, []);
+
+    const getParticipants = async () => {
+        setIsLoaded(false);
         const groupId = params.groupId;
 
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
-        const participantsRequest = API.groups.getParticipants(groupId);
+        const userGroupInfoRequest = await API.groups.getUserInfo(groupId);
+        const participantsRequest = await API.groups.getParticipants(groupId);
 
-        Promise.all([userGroupInfoRequest, participantsRequest])
+        await Promise.all([userGroupInfoRequest, participantsRequest])
             .then(([userGroupInfoResponse, perticipantsResponse]) => {
                 setUserGroupInfo(userGroupInfoResponse);
                 setParticipants(perticipantsResponse);
@@ -33,7 +38,7 @@ const ParticipantsPage = () => {
                 setError(error);
                 setIsLoaded(true);
             });
-    }, []);
+    }
 
     const handleParticipantClick = (participant) => {
         if (participant.userId === userGroupInfo.userId) {
@@ -110,7 +115,7 @@ const ParticipantsPage = () => {
 
             API.groups.updateParticipant(updatedParticipant, groupId)
                 .then((result) => {
-                    navigateCurrent();
+                    getParticipants();
                 }, (error) => {
                     WebApp.showAlert("Something went wrong while updating participants")
                 });
@@ -118,7 +123,6 @@ const ParticipantsPage = () => {
     }
 
     const navigateToGroupById = () => navigate(`/groups/${params.groupId}`);
-    const navigateCurrent = () => navigate(0);
 
     if (error) {
         return (

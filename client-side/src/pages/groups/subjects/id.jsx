@@ -3,9 +3,7 @@ import { animation, animationOptions } from '../../../Animations';
 import Lottie from "react-lottie";
 import { useState, useEffect } from 'react';
 import API from "../../../api";
-import WebApp from "@twa-dev/sdk";
 import { useNavigate, useParams } from 'react-router-dom';
-import services from '../../../misc/Services';
 import LessonTypeTag from '../../../components/LessonTypeTag';
 import HometasksList from '../../../components/HometasksList';
 
@@ -20,14 +18,19 @@ const SubjectByIdPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        getHometasks();
+    }, []);
+
+    const getHometasks = async() => {
+        setIsLoaded(false);
         const groupId = params.groupId;
         const subjectId = params.id;
 
-        const subjectByIdRequest = API.subjects.getById(groupId, subjectId);
-        const hometasksBySubjectRequest = API.hometasks.getBySubject(groupId, subjectId);
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
+        const subjectByIdRequest = await API.subjects.getById(groupId, subjectId);
+        const hometasksBySubjectRequest = await API.hometasks.getBySubject(groupId, subjectId);
+        const userGroupInfoRequest = await API.groups.getUserInfo(groupId);
 
-        Promise.all([userGroupInfoRequest, subjectByIdRequest, hometasksBySubjectRequest])
+        await Promise.all([userGroupInfoRequest, subjectByIdRequest, hometasksBySubjectRequest])
             .then(([userGroupInfoResponse, subjectByIdResponse, hometasksBySubjectResponse]) => {
                 setUserGroupInfo(userGroupInfoResponse);
                 setSubject(subjectByIdResponse);
@@ -38,7 +41,7 @@ const SubjectByIdPage = () => {
                 setError(error);
                 setIsLoaded(true);
             });
-    }, []);
+    }
 
     const navigateToSubjects = () => navigate(`/groups/${params.groupId}/subjects/`);
     const navigateToHometaskCreate = () => navigate(`/groups/${params.groupId}/subjects/${params.id}/hometasks/create`);
@@ -93,7 +96,11 @@ const SubjectByIdPage = () => {
                     </> : <></>
             }
             
-            <HometasksList hometasks={hometasks} groupId={params.groupId} userGroupInfo={userGroupInfo} />
+            <HometasksList 
+                hometasks={hometasks} 
+                groupId={params.groupId} 
+                userGroupInfo={userGroupInfo}
+                onDeleting={getHometasks} />
 
             {
                 userGroupInfo.canEdit ?

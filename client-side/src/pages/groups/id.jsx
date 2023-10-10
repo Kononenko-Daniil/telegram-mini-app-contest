@@ -60,6 +60,12 @@ const GroupByIdPage = () => {
             });
     }
 
+    const handleCopyAccessGroupData = () => {
+        const copyInformation = `Group ID: ${group.id}\nAccess code: ${group.accessCode}\n@stud_copilot_bot`;
+        navigator.clipboard.writeText(copyInformation);
+        WebApp.showAlert("Access information copied");
+    }
+
     const navigateHome = () => navigate("/");
     const navigateToTabPage = (tabName) => navigate(`/groups/${group.id}/${tabName}`)
 
@@ -133,6 +139,16 @@ const GroupByIdPage = () => {
                         description={"View and edit group participants"}
                         logoText={"👦"}
                         onClick={() => navigateToTabPage("participants")} /> : <></>
+            }
+
+            {
+                userGroupInfo.isOwner ?
+                    <button
+                        onClick={handleCopyAccessGroupData}
+                        className='primary-tinned'
+                        style={{ width: "90%", marginTop: "10px" }}>
+                        Copy access information
+                    </button> : <></>
             }
 
             <button

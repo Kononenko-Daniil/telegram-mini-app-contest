@@ -64,7 +64,9 @@ const HometaskByIdPage = () => {
                 {new Date(hometask.deadline).toLocaleString()}
             </div>
             
-            <h3 style={{lineHeight: "30px"}}>{hometask.content}</h3>
+            <div className='hometask-content'>
+                <h3 style={{lineHeight: "30px"}}>{hometask.content}</h3>
+            </div>
         </div>
     )
 }

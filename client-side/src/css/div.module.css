@@ -50,3 +50,9 @@ div.radio-group {
     flex-direction: row;
     justify-content: center;
 }
+
+div.hometask-content {
+    overflow-wrap: break-word;
+    text-overflow: clip;
+    width: 100%
+}

@@ -3,15 +3,35 @@
 This is repository of Student Copilot, my solve of Telegram Mini-app contest. Here is a step-by-step guide,
 which describes how to setup local environment for running this mini-app locally on your machine.
 
+### For what this mini-app? (Breathtaking message)
+
+While studying in university I've faced up with big problem. My classmates and I needed to cope with recording assigned hometasks by using not very convenient services. So this mini-app provides simple interface for creating student groups, subjects, links and also hometasks. 
+
+Why as a Telegram mini-app? Nowadays Telegram stores a lot of information, connected with studying (groups with teachers, announcement channels, etc.), and (from my point of view) this mini-app would be really interesting addition for all of this educational stuff.
+
+### How to test this by yourself without code?
+
+You can test my solution in [Student Copilot bot](https://t.me/stud_copilot_bot). Open it and press **"Study"** button to open mini-app. Than you can do whatever you want)
+
+If you want to join existing group and see how mini-app works for viewers, you can click **"Join existing group"** button on main page and enter the following data in the opened form:
+  - *Group ID* - not spec. yet
+  - *Access code* - not spec. yet
+  - *Nickname* - any nickname that you want
+
 ### Documentation table of contents
  - [API documentation](./docs/api-docs.md)
  - [UI documentation](./docs/ui-docs.md)
 
-# Technologies
+### Technologies
  - **Server-side**: .NET 7 (Web-API, REST API)
  - **Database**: MySQL, Planetscale (server)
  - **Client-side**: Vite (React)
 
+# Dictionary of concepts
+ - **group** - a group of users, which are united according to some characteristic *(e.g. class)*
+ - **link** - a link to important or usefull internet resource *(e.g. link to Github organization)*
+ - **subject** - a school subject for which homework may be assigned *(e.g. Programming, Maths)*
+ - **hometask** - assigned hometask *(e.g. Solve #1, #2, #3... from Maths Student`s book)*
 # Step-by-step setup guide
 
 Pull this repository to your local machine:

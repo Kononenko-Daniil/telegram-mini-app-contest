@@ -17,13 +17,17 @@ const LinksPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        getLinks()
+    }, []);
+
+    const getLinks = async () => {
+        setIsLoaded(false);
         const groupId = params.groupId;
 
-        const userGroupInfoRequest = API.groups.getUserInfo(groupId);
-        const linksByGroupRequest = API.links.getByGroup(groupId);
-
-        setIsLoaded(false);
-        Promise.all([userGroupInfoRequest, linksByGroupRequest])
+        const userGroupInfoRequest = await API.groups.getUserInfo(groupId);
+        const linksByGroupRequest = await API.links.getByGroup(groupId);
+        
+        await Promise.all([userGroupInfoRequest, linksByGroupRequest])
             .then(([userGroupInfoResponse, linksByGroupResponse]) => {
                 setUserGroupInfo(userGroupInfoResponse);
                 setLinks(linksByGroupResponse);
@@ -33,7 +37,7 @@ const LinksPage = () => {
                 setError(error);
                 setIsLoaded(true);
             });
-    }, []);
+    }
 
     const handleLinkClick = (link) => {
         if (!userGroupInfo.canEdit) {
@@ -69,7 +73,7 @@ const LinksPage = () => {
                 case deleteLinkButton.id: {
                     API.links.remove(link.id, groupId)
                         .then((result) => {
-                            navigateToCurrent();
+                            getLinks()
                         }, (error) => {
                             WebApp.showAlert("Something went wrong while deleting link");
                         })
@@ -80,7 +84,6 @@ const LinksPage = () => {
     }
 
     const navigateToLinkCreate = () => navigate(`/groups/${params.groupId}/links/create`);
-    const navigateToCurrent = () =>  navigate(0);
     const navigateToGroupById = () => navigate(`/groups/${params.groupId}`);
 
     if (error) {
