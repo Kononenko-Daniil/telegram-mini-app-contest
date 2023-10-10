@@ -62,8 +62,13 @@ const GroupByIdPage = () => {
 
     const handleCopyAccessGroupData = () => {
         const copyInformation = `Group ID: ${group.id}\nAccess code: ${group.accessCode}\n@stud_copilot_bot`;
-        navigator.clipboard.writeText(copyInformation);
-        WebApp.showAlert("Access information copied");
+        navigator.clipboard.writeText(copyInformation)
+            .then(() => {
+                WebApp.showAlert("Access information copied");
+            })
+            .catch(() => {
+                WebApp.showAlert("Something went wrong");
+            });
     }
 
     const navigateHome = () => navigate("/");
@@ -167,8 +172,6 @@ const GroupByIdPage = () => {
                         Delete group
                     </button> : <></>
             }
-
-
         </div>
     )
 }
