@@ -27,6 +27,8 @@ You can test my solution in [Student Copilot bot](https://t.me/stud_copilot_bot)
  - **link** - a link to important or usefull internet resource *(e.g. link to Github organization)*
  - **subject** - a school subject for which homework may be assigned *(e.g. Programming, Maths)*
  - **hometask** - assigned hometask *(e.g. Solve #1, #2, #3... from Maths Student`s book)*
+ - **access code** - specific code that other users need to join your group
+ - **nickname** - user name in specific group
 # Step-by-step setup guide
 
 Pull this repository to your local machine:
