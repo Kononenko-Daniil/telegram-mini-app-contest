@@ -13,11 +13,6 @@ Why as a Telegram mini-app? Nowadays Telegram stores a lot of information, conne
 
 You can test my solution in [Student Copilot bot](https://t.me/stud_copilot_bot). Open it and press **"Study"** button to open mini-app. Than you can do whatever you want)
 
-If you want to join existing group and see how mini-app works for viewers, you can click **"Join existing group"** button on main page and enter the following data in the opened form:
-  - *Group ID* - not spec. yet
-  - *Access code* - not spec. yet
-  - *Nickname* - any nickname that you want
-
 ### Documentation table of contents
  - [API documentation](./docs/api-docs.md)
  - [UI documentation](./docs/ui-docs.md)
